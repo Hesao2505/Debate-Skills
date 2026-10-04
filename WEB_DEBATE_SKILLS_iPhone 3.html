@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English for Debate — HUFLIT Course System</title>
+<style>
+:root{
+  --roof:#8a3b2e;
+  --roof-dark:#6b2c22;
+  --pillar:#c98a3e;
+  --foundation:#2f4a3e;
+  --paper:#faf6ee;
+  --paper2:#f1ead9;
+  --ink:#26201a;
+  --ink-soft:#5a5044;
+  --line:#ddd1b8;
+  --accent:#1f6f5c;
+  --wrong:#a4433a;
+  --right:#2f6b46;
+  --serif: 'Iowan Old Style','Palatino Linotype', Georgia, 'Times New Roman', serif;
+  --sans: 'Avenir Next','Segoe UI', Helvetica, Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--sans);
+  background:
+    radial-gradient(circle at 15% 0%, #fffaf0 0%, transparent 45%),
+    var(--paper);
+  color:var(--ink);
+  min-height:100vh;
+}
+
+/* ---------- Header / house motif ---------- */
+header.top{
+  position:relative;
+  background: linear-gradient(180deg,var(--roof) 0%, var(--roof-dark) 100%);
+  color:#fdf3e6;
+  padding:28px 20px 60px;
+  overflow:hidden;
+}
+header.top::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:0; height:26px;
+  background:var(--paper);
+  clip-path: polygon(0 100%, 3% 40%, 6% 100%, 9% 45%, 12% 100%, 15% 40%, 18% 100%, 21% 45%, 24% 100%, 27% 40%, 30% 100%, 33% 45%, 36% 100%, 39% 40%, 42% 100%, 45% 45%, 48% 100%, 51% 40%, 54% 100%, 57% 45%, 60% 100%, 63% 40%, 66% 100%, 69% 45%, 72% 100%, 75% 40%, 78% 100%, 81% 45%, 84% 100%, 87% 40%, 90% 100%, 93% 45%, 96% 100%, 99% 40%, 100% 100%, 100% 100%, 0 100%);
+}
+.top-inner{max-width:1000px;margin:0 auto;position:relative;z-index:2;}
+.eyebrow{
+  font-family:var(--sans); text-transform:uppercase; letter-spacing:.16em;
+  font-size:.72rem; color:#f0c894; margin-bottom:10px; font-weight:600;
+}
+h1.course-title{
+  font-family:var(--serif); font-weight:400; font-size:2.5rem; line-height:1.08;
+  margin:0 0 6px; letter-spacing:.01em;
+}
+.course-sub{font-family:var(--sans); font-size:.95rem; color:#f4e4cb; opacity:.9;}
+
+/* the "house" diagram in header */
+.house-badge{
+  position:absolute; right:26px; top:18px; width:96px; height:96px; opacity:.9;
+}
+
+/* ---------- Layout ---------- */
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px 80px;}
+.layout{display:grid; grid-template-columns:220px 1fr; gap:28px; margin-top:26px;}
+@media (max-width:820px){ .layout{grid-template-columns:1fr;} }
+
+/* ---------- Session nav ---------- */
+nav.sessions{
+  position:sticky; top:16px; align-self:start;
+  max-height:calc(100vh - 32px); overflow-y:auto;
+  background:var(--paper2); border:1px solid var(--line); border-radius:10px; padding:10px;
+}
+nav.sessions .nav-title{font-size:.7rem; text-transform:uppercase; letter-spacing:.12em; color:var(--ink-soft); padding:6px 8px 10px; font-weight:700;}
+.nav-item{
+  display:block; width:100%; text-align:left; background:none; border:none; cursor:pointer;
+  font-family:var(--sans); font-size:.86rem; color:var(--ink); padding:8px 9px; border-radius:6px;
+  margin-bottom:2px; line-height:1.25;
+}
+.nav-item .n{ font-family:var(--serif); font-style:italic; color:var(--pillar); margin-right:5px;}
+.nav-item:hover{background:#e8dec2;}
+.nav-item.active{background:var(--roof); color:#fdf3e6;}
+.nav-item.active .n{color:#f0c894;}
+.nav-item .tag{display:block; font-size:.68rem; color:var(--ink-soft); font-style:italic;}
+.nav-item.active .tag{color:#f4e0c4;}
+
+/* ---------- Main content card ---------- */
+main.session{background:#fffdf8; border:1px solid var(--line); border-radius:12px; padding:34px 38px; box-shadow:0 1px 0 rgba(0,0,0,.03);}
+@media(max-width:600px){ main.session{padding:22px 18px;} }
+
+.session-kicker{font-size:.72rem; text-transform:uppercase; letter-spacing:.13em; color:var(--accent); font-weight:700; margin-bottom:8px;}
+h2.session-title{font-family:var(--serif); font-size:1.9rem; font-weight:400; margin:0 0 14px; color:var(--roof-dark);}
+.refs{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:22px;}
+.ref-chip{font-size:.78rem; background:var(--paper2); border:1px solid var(--line); border-radius:20px; padding:5px 13px; color:var(--ink-soft);}
+.badge-selfstudy, .badge-minitest, .badge-review{
+  display:inline-block; font-size:.72rem; font-weight:700; letter-spacing:.04em;
+  padding:4px 11px; border-radius:20px; margin-bottom:16px; margin-right:8px;
+}
+.badge-selfstudy{background:#eadcc4; color:#6b4c1f;}
+.badge-minitest{background:#f0d8d3; color:var(--wrong);}
+.badge-review{background:#d9e6df; color:var(--right);}
+
+/* objectives */
+.objectives{background:var(--paper2); border-left:4px solid var(--pillar); border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0 28px;}
+.objectives h3{margin:0 0 8px; font-size:.85rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft);}
+.objectives ul{margin:0; padding-left:20px;}
+.objectives li{margin-bottom:5px; font-size:.94rem;}
+
+/* section tabs */
+.tabbar{display:flex; gap:6px; border-bottom:2px solid var(--line); margin:30px 0 24px; flex-wrap:wrap;}
+.tabbtn{
+  font-family:var(--sans); font-weight:600; font-size:.86rem; background:none; border:none; cursor:pointer;
+  padding:10px 16px; color:var(--ink-soft); border-bottom:3px solid transparent; margin-bottom:-2px;
+}
+.tabbtn.active{color:var(--roof-dark); border-bottom-color:var(--roof);}
+.tabpanel{display:none;}
+.tabpanel.active{display:block;}
+
+/* lecture */
+.lec-block{margin-bottom:26px;}
+.lec-block h4{font-family:var(--serif); font-size:1.2rem; color:var(--foundation); margin:0 0 10px; font-weight:600;}
+.lec-block p{line-height:1.65; margin:0 0 12px; font-size:.98rem;}
+.lec-block ul, .lec-block ol{line-height:1.65; font-size:.98rem;}
+table.mini-table{width:100%; border-collapse:collapse; margin:14px 0 18px; font-size:.9rem;}
+table.mini-table th, table.mini-table td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top;}
+table.mini-table th{background:var(--paper2); font-family:var(--sans); font-weight:700; color:var(--foundation);}
+
+/* practice */
+.practice-card{background:var(--paper2); border-radius:10px; padding:18px 22px; margin-bottom:18px; border:1px solid var(--line);}
+.practice-card h4{margin:0 0 10px; font-family:var(--serif); font-size:1.1rem; color:var(--roof-dark);}
+.practice-card p, .practice-card ol, .practice-card ul{font-size:.94rem; line-height:1.6;}
+.key{color:var(--accent); font-weight:600; background:#e4f1ec; border-radius:6px; padding:8px 12px; display:inline-block; margin-top:6px;}
+
+/* quiz */
+.quiz-progress{font-size:.82rem; color:var(--ink-soft); margin-bottom:14px;}
+.qcard{border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin-bottom:16px; background:#fffefb;}
+.qcard .qtext{font-weight:700; margin-bottom:12px; font-size:.98rem;}
+.opt{
+  display:block; width:100%; text-align:left; padding:10px 14px; margin-bottom:8px;
+  border:1px solid var(--line); border-radius:8px; background:#fff; cursor:pointer; font-family:var(--sans); font-size:.92rem;
+}
+.opt:hover{background:var(--paper2);}
+.opt.selected{border-color:var(--pillar); background:#fbeed6;}
+.opt.correct{border-color:var(--right); background:#dff0e5; font-weight:700;}
+.opt.incorrect{border-color:var(--wrong); background:#f6e0dd;}
+.opt[disabled]{cursor:default;}
+.explain{font-size:.87rem; margin-top:10px; padding:10px 12px; border-radius:8px; background:var(--paper2); display:none;}
+.explain.show{display:block;}
+.quiz-actions{display:flex; gap:12px; align-items:center; margin-top:18px;}
+button.primary{
+  background:var(--roof); color:#fdf3e6; border:none; padding:11px 22px; border-radius:8px;
+  font-weight:700; cursor:pointer; font-family:var(--sans); font-size:.9rem;
+}
+button.primary:hover{background:var(--roof-dark);}
+button.ghost{
+  background:none; border:1px solid var(--line); padding:10px 18px; border-radius:8px;
+  cursor:pointer; font-family:var(--sans); font-size:.9rem; color:var(--ink-soft);
+}
+.score-box{font-weight:700; color:var(--accent); font-size:1rem;}
+
+/* videos */
+.video-card{border:1px solid var(--line); border-radius:10px; padding:18px 22px; margin-bottom:18px; background:#fffefb;}
+.video-card .vchannel{font-size:.76rem; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); font-weight:700; margin-bottom:4px;}
+.video-card h4{margin:0 0 8px; font-family:var(--serif); font-size:1.15rem; color:var(--roof-dark);}
+.video-card a.vlink{font-size:.86rem; word-break:break-all; color:var(--accent); text-decoration:none; font-weight:600;}
+.video-card a.vlink:hover{text-decoration:underline;}
+.video-card .vlabel{font-weight:700; font-size:.8rem; color:var(--ink-soft); display:block; margin-top:12px; margin-bottom:3px; text-transform:uppercase; letter-spacing:.05em;}
+.video-card p{font-size:.92rem; line-height:1.6; margin:0;}
+.video-card.gap{border-style:dashed; opacity:.9;}
+
+/* footer nav buttons */
+.session-footer-nav{display:flex; justify-content:space-between; margin-top:38px; padding-top:22px; border-top:1px solid var(--line);}
+
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-thumb{background:var(--line); border-radius:8px;}
+
+/* ---------- Mobile session drawer fix ---------- */
+.mobile-session-toggle{display:none;}
+.session-backdrop{display:none;}
+@media(max-width:820px){
+  .layout{display:block; margin-top:16px;}
+  nav.sessions{
+    position:fixed; z-index:1001; left:0; top:0; bottom:0; width:min(86vw,340px);
+    max-height:none; overflow-y:auto; margin:0; border-radius:0 12px 12px 0;
+    padding:18px 12px 28px; transform:translateX(-105%); transition:transform .22s ease;
+    box-shadow:10px 0 30px rgba(0,0,0,.18);
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.sessions.open{transform:translateX(0);}
+  .session-backdrop{
+    position:fixed; z-index:1000; inset:0; background:rgba(0,0,0,.42);
+  }
+  .session-backdrop.open{display:block;}
+  .mobile-session-toggle{
+    display:inline-flex; position:fixed; z-index:999; right:14px; bottom:16px;
+    align-items:center; justify-content:center; gap:7px;
+    background:var(--roof); color:#fdf3e6; border:0; border-radius:999px;
+    padding:11px 16px; font-family:var(--sans); font-weight:700; font-size:.86rem;
+    box-shadow:0 5px 18px rgba(0,0,0,.2); cursor:pointer;
+  }
+  body.drawer-open{overflow:hidden;position:fixed;width:100%;left:0;right:0;}
+  main.session{width:100%;}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="eyebrow">HUFLIT · English Language Major · 3 Credits</div>
+    <h1 class="course-title" id="courseTitle">English for Debate</h1>
+    <div class="course-sub" id="courseSub">A 15-session digital lecture &amp; practice system</div>
+  </div>
+  <svg class="house-badge" viewBox="0 0 100 100" fill="none">
+    <polygon points="50,8 92,42 84,42 84,90 16,90 16,42 8,42" fill="#f0c894" opacity=".85"/>
+    <rect x="30" y="55" width="14" height="35" fill="#6b2c22"/>
+    <rect x="56" y="55" width="14" height="18" fill="#6b2c22"/>
+    <text x="50" y="30" font-size="9" text-anchor="middle" fill="#6b2c22" font-family="Georgia, serif">OPINION</text>
+  </svg>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <button class="mobile-session-toggle" id="sessionToggle" type="button" aria-controls="sessionNav" aria-expanded="false">☰ Sessions</button>
+    <div class="session-backdrop" id="sessionBackdrop"></div>
+    <nav class="sessions" id="sessionNav"></nav>
+    <main class="session" id="sessionMain"></main>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// English for Debate — HUFLIT — 15-Session Course Data
+// ============================================================
+const COURSE = {
+  title: "English for Debate",
+  subtitle: "HUFLIT — English Language Major | 3 Credits | 15 Sessions",
+  sessions: []
+};
+
+function addSession(s){ COURSE.sessions.push(s); }
+
+// ---------------- SESSION 1 ----------------
+addSession({
+  week: 1,
+  title: "Introduction to Debate & Basic Opinions",
+  skillRef: "Discover Debate – Unit 1: Have an Opinion",
+  topicRef: "Exploring Debate 2 – Unit 1: School Uniforms",
+  objectives: [
+    "Explain what academic debate is and identify the Affirmative and Negative teams, the Resolution, the Judge, and the Audience.",
+    "Classify a statement as an Opinion of Value, an Opinion of Policy, or an Opinion of Fact.",
+    "Recognize agreement and disagreement between speakers in a short conversation.",
+    "Build topic vocabulary and arguments around the theme of School Uniforms."
+  ],
+  lecture: [
+    {
+      h: "1. What Is Debate?",
+      body: `<p>A <b>debate</b> is a formal contest of argumentation in which two sides speak for and against a stated proposition. Every debate starts from a <b>Resolution</b> (also called a <b>Proposition</b>) — the single sentence that the whole round argues about, e.g. <i>"This house believes that school uniforms should be compulsory."</i></p>
+      <p>The team that supports the resolution is the <b>Affirmative Team</b> (Aff); the team that opposes it is the <b>Negative Team</b> (Neg). A <b>Judge</b> (or a panel of judges) listens to both sides and decides which team argued more convincingly. In a classroom, the rest of the class is the <b>Audience</b>.</p>
+      <p>Think of a debate case as a <b>house</b>: the <b>opinion</b> (resolution) is the roof; the <b>reasons</b> are the pillars holding the roof up; the <b>evidence</b> is the foundation that keeps the pillars standing. If any part is missing or weak, the house — and the argument — collapses.</p>`
+    },
+    {
+      h: "2. Three Types of Opinion",
+      body: `<p>Almost every resolution falls into one of three categories. Learning to identify these categories quickly is the first debate skill, because each type is proven with different kinds of reasons and evidence.</p>
+      <table class="mini-table">
+        <tr><th>Type</th><th>Pattern</th><th>Example</th></tr>
+        <tr><td><b>Value</b></td><td>X is better / worse than Y</td><td>"Public schools are better than private schools."</td></tr>
+        <tr><td><b>Policy</b></td><td>X should / should not do Y</td><td>"Schools should require uniforms."</td></tr>
+        <tr><td><b>Fact</b></td><td>X is / was / will be true</td><td>"Uniforms reduce bullying in schools."</td></tr>
+      </table>
+      <p>Policy resolutions are the most common in classroom debate because they ask for concrete action and naturally invite a for/against structure.</p>`
+    },
+    {
+      h: "3. Agreeing and Disagreeing",
+      body: `<p>Before we can argue, we need the everyday language of agreement and disagreement:</p>
+      <ul>
+        <li><b>Agreeing:</b> "I agree." / "That's exactly how I see it." / "You've got a point there."</li>
+        <li><b>Disagreeing politely:</b> "I see it differently." / "I'm not so sure about that." / "I'd have to disagree, because..."</li>
+      </ul>
+      <p>In debate, disagreement is never personal — it targets the <i>argument</i>, not the person making it.</p>`
+    },
+    {
+      h: "4. Topic Focus — School Uniforms",
+      body: `<p>Should students be required to wear school uniforms? Supporters argue that uniforms save families money, reduce peer pressure and competition over clothing, and create a stronger sense of school spirit and equality. Critics argue that uniforms suppress students' individuality and self-expression, do little to actually change behavior, and add an unnecessary cost for low-income families who must still buy regular clothes for outside of school.</p>
+      <p><b>Useful vocabulary:</b> uniform, conform / conformity, eliminate, individuality, peer pressure, self-expression, suppress, distraction, school spirit, socioeconomic status.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Exercise A — Classify the Opinion",
+      body: `<p>Label each sentence <b>V</b> (Value), <b>P</b> (Policy), or <b>F</b> (Fact).</p>
+      <ol type="a">
+        <li>Uniforms are less expensive than regular clothes over a school year.</li>
+        <li>All public schools should adopt a compulsory uniform policy.</li>
+        <li>A relaxed dress code is better for student creativity than a uniform.</li>
+        <li>Students who wear uniforms report fewer instances of being teased about clothing.</li>
+        <li>Parents, not schools, should decide what children wear.</li>
+      </ol>
+      <p class="key">Answer key: a) F  b) P  c) V  d) F  e) P</p>`
+    },
+    {
+      title: "Exercise B — Agree or Disagree",
+      body: `<p>Work with a partner. Partner A reads an opinion about school uniforms; Partner B responds, clearly signaling agreement or disagreement and giving one short reason. Example:<br>
+      <i>A: "I think uniforms make school less stressful because nobody worries about what to wear."<br>
+      B: "I see it differently — uniforms don't remove stress, they just hide it. Students still compare shoes, bags, and watches."</i></p>`
+    }
+  ],
+  quiz: [
+    {q:"What is the single sentence that an entire debate argues about called?", options:["The Judge","The Resolution","The Rebuttal","The Audience"], a:1, exp:"The Resolution (or Proposition) is the statement both teams debate."},
+    {q:"Which team supports the resolution?", options:["The Negative Team","The Judge","The Affirmative Team","The Audience"], a:2, exp:"The Affirmative Team argues in favor of the resolution."},
+    {q:"\"The government should ban plastic bags\" is an opinion of...", options:["Value","Policy","Fact","Opinion is not classifiable"], a:1, exp:"It uses the pattern 'X should do Y', which is Policy."},
+    {q:"\"Cats make better pets than dogs\" is an opinion of...", options:["Value","Policy","Fact","None of the above"], a:0, exp:"It compares two things using 'better than', which is Value."},
+    {q:"\"The Earth's temperature is rising\" is an opinion of...", options:["Value","Policy","Fact","Policy and Fact"], a:2, exp:"It states something claimed to be true, which is Fact."},
+    {q:"In the 'debate house' metaphor, what does the roof represent?", options:["Evidence","Reasons","The Opinion / Resolution","The Judge"], a:2, exp:"The roof is the opinion; pillars are reasons; the foundation is evidence."},
+    {q:"According to the lesson, one argument FOR school uniforms is that they...", options:["increase clothing costs","reduce competition over clothing among students","eliminate all school stress","are required by international law"], a:1, exp:"Supporters argue uniforms reduce peer pressure/competition over clothes."}
+  ],
+  videos: [
+    {
+      channel: "PBS Student Reporting Labs / local U.S. news",
+      title: "Do School Uniforms Help Students Learn?",
+      url: "https://www.youtube.com/watch?v=WMetDWhU0z4",
+      summary: "American reporters and students discuss whether school uniform policies actually change behavior and academic focus, interviewing parents, students, and school administrators on both sides.",
+      analysis: "This is a direct match for Session 1's topic. Students hear natural, conversational American English while collecting real arguments for and against uniforms — useful raw material for classifying Value/Policy/Fact opinions and for the practice debate."
+    },
+    {
+      channel: "Local U.S. TV news report",
+      title: "Taking a closer look at the impacts of school uniforms",
+      url: "https://www.youtube.com/watch?v=o2UiuKQpPvg",
+      summary: "A short American news segment examining the back-to-school uniform debate, presenting the cost-saving and discipline arguments alongside concerns about self-expression.",
+      analysis: "Short (under 5 minutes) and conversational, this clip is ideal as a warm-up listening task before Exercise A: students can pause the video and label the reporter's claims as Value, Policy, or Fact in real time."
+    }
+  ]
+});
+
+// ---------------- SESSION 2 ----------------
+addSession({
+  week: 2,
+  title: "Explaining Your Opinion & Giving Reasons",
+  skillRef: "Discover Debate – Unit 2: Explaining Your Opinion",
+  topicRef: "Exploring Debate 2 – Unit 3: College",
+  objectives: [
+    "Explain why an opinion must always be supported by a reason.",
+    "Use comparison, contrast, and cause-and-effect language to give reasons.",
+    "Practice short structured dialogs: opinion → reason → follow-up question.",
+    "Build arguments around whether everyone should go to college."
+  ],
+  lecture: [
+    {
+      h: "1. An Opinion Needs a Reason",
+      body: `<p>An opinion stated alone ("Math is the most important subject") is not yet an argument — it is just a claim. It becomes persuasive only once a <b>reason</b> is attached ("...because we use math every day"). In debate, the job of a speaker is not simply to state a position, but to give reasons that a neutral judge — not just the speaker — would find reasonable.</p>
+      <p>A good habit is to always be ready to answer the question "Why?" the moment you state an opinion.</p>`
+    },
+    {
+      h: "2. Language for Giving Reasons",
+      body: `<p>Three grammatical patterns cover almost every reason you will ever give in debate:</p>
+      <table class="mini-table">
+        <tr><th>Pattern</th><th>Structure</th><th>Example</th></tr>
+        <tr><td>Comparison / Contrast</td><td>X is [adjective-er] than Y</td><td>"A degree is more valuable than years of unskilled work experience."</td></tr>
+        <tr><td>Cause & Effect</td><td>If X, then Y / X leads to Y</td><td>"If tuition keeps rising, fewer low-income students will apply."</td></tr>
+        <tr><td>Because-clause</td><td>Opinion + because + reason</td><td>"College is a good investment because graduates earn more over a lifetime."</td></tr>
+      </table>
+    `},
+    {
+      h: "3. Practicing the Exchange",
+      body: `<p>A classic debate warm-up dialog follows this shape:</p>
+      <p><i>A: What do you think of [X]?<br>
+      B: I think that [opinion].<br>
+      A: Why?<br>
+      B: Because [reason].</i></p>
+      <p>Practicing this exchange automatically builds the habit of never leaving an opinion unexplained — the single most common weakness in beginner debaters.</p>`
+    },
+    {
+      h: "4. Topic Focus — College",
+      body: `<p>Is a college education worth the time and money? Arguments in favor: college prepares people for high-paying, competitive careers; it offers social capital through networking; professors push students toward higher standards. Arguments against: tuition and student debt are enormous financial burdens; several careers do not require a degree; four years is a major opportunity cost that could be spent working or gaining hands-on experience.</p>
+      <p><b>Useful vocabulary:</b> tuition, investment, qualification, student loan, financial hardship, commitment, career prospects, networking, opportunity cost.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Exercise A — Opinion + Reason Chains",
+      body: `<p>Complete each opinion with a reason using the pattern shown.</p>
+      <ol>
+        <li>I think that community college is a smart choice ________ (because).</li>
+        <li>A four-year university degree is ________ than trade school training (comparison).</li>
+        <li>If tuition fees keep increasing, ________ (cause-effect).</li>
+      </ol>`
+    },
+    {
+      title: "Exercise B — Pair Dialog",
+      body: `<p>With a partner, perform the A/B dialog pattern from the lecture three times, each time using a different opinion about college (e.g., "everyone should go to college," "online degrees are as good as traditional degrees," "college athletes should be paid"). Partner B must always answer "Why?" and Partner A must always give a real reason — no repeating the opinion in different words.</p>`
+    }
+  ],
+  quiz: [
+    {q:"What turns a bare opinion into the beginning of an argument?", options:["Repeating it loudly","Attaching a reason","Saying it in a formal tone","Nothing — an opinion is already an argument"], a:1, exp:"An opinion needs a reason to become an argument."},
+    {q:"\"College is a good investment because graduates earn more over a lifetime\" uses which pattern?", options:["Comparison","Cause and effect","Because-clause","Signpost"], a:2, exp:"It directly uses 'because' to attach a reason."},
+    {q:"\"A degree is more valuable than years of unskilled experience\" is an example of...", options:["Contrast/Comparison","Cause and effect","Refutation","Evidence"], a:0, exp:"It compares two things using a comparative adjective form."},
+    {q:"In the practice dialog pattern, what question always follows an opinion?", options:["\"Really?\"","\"Why?\"","\"When?\"","\"Who said that?\""], a:1, exp:"'Why?' prompts the speaker to give a reason."},
+    {q:"According to the lecture, one argument AGAINST everyone going to college is...", options:["Professors are unqualified","Networking has no value","Tuition and debt can be a heavy financial burden","College never improves career prospects"], a:2, exp:"Tuition/debt burden is a key argument against universal college attendance."},
+    {q:"Which of these is an 'if...then' cause-and-effect reason?", options:["\"Community college is cheaper than a university.\"","\"If tuition keeps rising, fewer students will apply.\"","\"I like studying business.\"","\"That is not true.\""], a:1, exp:"It follows the if-then cause/effect structure."}
+  ],
+  videos: [
+    {
+      channel: "PBS NewsHour",
+      title: "Is College Worth the Cost?",
+      url: "https://www.pbs.org/video/is-college-worth-the-cost-1498960546",
+      summary: "A short PBS NewsHour segment reports that U.S. student debt has surpassed credit-card and auto-loan debt combined, and follows a Wall Street Journal reporter discussing why schools are being pushed to publish clearer data on graduation rates and graduates' earnings.",
+      analysis: "Calm, professional American-English narration with on-screen data gives students concrete numbers (debt levels, earning outcomes) to build 'because' and cause-and-effect sentences for or against the value of a degree."
+    },
+    {
+      channel: "PBS NewsHour",
+      title: "An Argument Against Free Community College Tuition",
+      url: "https://www.pbs.org/video/rethinking-college-1623181375",
+      summary: "As part of PBS NewsHour's 'Rethinking College' series, a former U.S. education official discusses concerns about a national free-community-college proposal, while the report notes seventeen states already offer some form of free tuition.",
+      analysis: "A polite, studio-interview format that models how to disagree respectfully with a policy — ideal for practicing Policy-type opinions and comparison reasoning about who should pay for college."
+    }
+  ]
+});
+
+// ---------------- SESSION 3 ----------------
+addSession({
+  week: 3,
+  title: "Supporting Your Opinion & Types of Support",
+  skillRef: "Discover Debate – Unit 2–3: Brainstorming Reasons, Supporting Your Opinion, Types of Support",
+  topicRef: "Exploring Debate 2 – Unit 5: Internet Censorship",
+  objectives: [
+    "Brainstorm multiple reasons for a single opinion.",
+    "Identify the four types of support: Explanation, Example, Statistic, and Expert Opinion.",
+    "Attach appropriate supports to a reason using correct signal language.",
+    "Build arguments around internet censorship."
+  ],
+  lecture: [
+    {
+      h: "1. From One Reason to Several",
+      body: `<p>Strong debate cases rarely rest on a single reason. Before organizing a speech, debaters <b>brainstorm</b> as many independent reasons as possible for their opinion, then select the two-to-four strongest ones. Independent reasons should not overlap — each should stand on its own even if the others were removed.</p>`
+    },
+    {
+      h: "2. Reasons Need Evidence",
+      body: `<p>A reason by itself is still just a claim. <b>Evidence</b> is the concrete backing that makes a reason credible. There are four common types of support:</p>
+      <table class="mini-table">
+        <tr><th>Type of Support</th><th>What it does</th><th>Signal Language</th></tr>
+        <tr><td><b>Explanation</b></td><td>Logically unpacks why the reason is true</td><td>"This is because…", "The logic behind this is…"</td></tr>
+        <tr><td><b>Example</b></td><td>Gives one specific real case</td><td>"For example…", "For instance…"</td></tr>
+        <tr><td><b>Statistic</b></td><td>Gives a number or data point</td><td>"According to a 2023 study, 40% of…"</td></tr>
+        <tr><td><b>Expert Opinion</b></td><td>Cites a specialist's judgment</td><td>"According to Dr. ___, an expert in…"</td></tr>
+      </table>
+      <p>The strongest speeches combine more than one type of support for their most important points.</p>`
+    },
+    {
+      h: "3. Topic Focus — Internet Censorship",
+      body: `<p>Should governments be allowed to censor the internet? Supporters of censorship argue it protects citizens — especially children — from dangerous material such as bomb-making instructions, violent content, or malicious software, and can help maintain public order. Opponents argue that censorship is nearly impossible to enforce completely (users can route around blocks), and that it threatens freedom of speech and expression, sometimes becoming a tool for governments to silence criticism rather than protect the public.</p>
+      <p><b>Useful vocabulary:</b> censor / censorship, regulate, freedom of expression, filter, ban, surveillance, circumvent, jurisdiction, malicious content.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Exercise A — Identify the Support Type",
+      body: `<p>Read each supporting sentence and label it Explanation (E), Example (Ex), Statistic (S), or Expert Opinion (EO).</p>
+      <ol type="a">
+        <li>"According to a 2021 Freedom House report, over 70 countries restrict some online content."</li>
+        <li>"For instance, China's 'Great Firewall' blocks access to many foreign websites."</li>
+        <li>"This is because harmful material spreads faster online than governments can react to it."</li>
+        <li>"Dr. Aiden Cole, a cybersecurity researcher, argues that filtering alone cannot stop determined users."</li>
+      </ol>
+      <p class="key">Answer key: a) S  b) Ex  c) E  d) EO</p>`
+    },
+    {
+      title: "Exercise B — Build a Support Chain",
+      body: `<p>Choose ONE of these reasons and write two different types of support for it: <br>
+      (1) "Internet censorship protects children from harmful content."<br>
+      (2) "Internet censorship threatens freedom of speech."</p>`
+    }
+  ],
+  quiz: [
+    {q:"What is the purpose of evidence in an argument?", options:["To repeat the opinion","To make a reason credible and concrete","To replace the need for a reason","To confuse the judge"], a:1, exp:"Evidence supports and strengthens a reason."},
+    {q:"\"For example, China blocks many foreign websites\" is what type of support?", options:["Statistic","Example","Expert Opinion","Explanation"], a:1, exp:"It gives one specific real case, introduced by 'for example'."},
+    {q:"\"According to a 2021 report, over 70 countries restrict online content\" is what type of support?", options:["Example","Explanation","Statistic","Expert Opinion"], a:2, exp:"It presents numerical/data-based evidence."},
+    {q:"When brainstorming reasons for a case, what should good reasons ideally be?", options:["Repetitive","Independent of each other","Based only on personal feelings","As vague as possible"], a:1, exp:"Independent reasons each stand on their own strength."},
+    {q:"Which signal phrase typically introduces an Expert Opinion?", options:["\"For instance...\"","\"According to Dr. ___, an expert in...\"","\"This is because...\"","\"For example...\""], a:1, exp:"Naming a credentialed expert signals Expert Opinion."},
+    {q:"According to the lecture, one argument AGAINST internet censorship is that it...", options:["always stops all harmful content completely","can threaten freedom of speech and expression","is impossible to discuss","has no relationship to government power"], a:1, exp:"Censorship critics point to threats against free expression."}
+  ],
+  videos: [
+    {
+      channel: "WIRED (Incognito Mode)",
+      title: "Has The U.S. Become A Surveillance State?",
+      url: "https://www.youtube.com/watch?v=iW22pj_wfLc",
+      summary: "An American technology-focused explainer discussing the growth of government digital monitoring in the U.S. and the debate over how far such control should go.",
+      analysis: "Although focused on surveillance rather than censorship specifically, this video shares the same core tension in the topic — how much power a government should have over citizens' information — and models Statistic and Expert Opinion supports students can imitate."
+    },
+    {
+      channel: "Johnny Harris",
+      title: "Here's how Government Legally SPIES on You",
+      url: "https://www.youtube.com/watch?v=Z86p_36o5ws",
+      summary: "An American independent journalist explains, in a conversational explainer style, the legal frameworks that allow governments to monitor and restrict information online.",
+      analysis: "The presenter frequently uses Explanation and Example supports in a clear, mid-length format — good raw material for Exercise A's support-identification task and for building a case on internet control."
+    }
+  ]
+});
+
+// ---------------- SESSION 4 (self-study) ----------------
+addSession({
+  week: 4,
+  title: "Self-Study on Moodle — Researching Supports",
+  skillRef: "Discover Debate – Unit 3: Supporting Your Opinion (continued) — Researching Supports",
+  topicRef: "Exploring Debate 2 – Unit 4: File Sharing",
+  selfStudy: true,
+  objectives: [
+    "Independently locate credible sources (news, journals, official reports) to support a given reason.",
+    "Distinguish reliable sources from questionable ones (no date, no author, biased sponsor, etc.).",
+    "Write two claims about online file sharing, each backed by a different type of support."
+  ],
+  lecture: [
+    {
+      h: "1. Why This Session Is Self-Study",
+      body: `<p>Finding good evidence is a research skill that students should practice independently, at their own pace, using library databases, reputable news sites, and academic sources. This session is delivered through Moodle materials, quizzes, and guided worksheets rather than in-class lecture, so that class time can be spent later on speaking and organizing skills.</p>`
+    },
+    {
+      h: "2. A Checklist for Judging a Source",
+      body: `<ul>
+        <li>Is a <b>source</b> named at all? (An unattributed claim is the weakest kind of evidence.)</li>
+        <li>Is there an <b>explanation</b> of why the claim is true, or just a bare assertion?</li>
+        <li>Is a <b>date</b> given? Old data can be misleading for fast-changing topics like technology.</li>
+        <li>Is the <b>statistic</b> questionable — too small a sample, or an unclear method?</li>
+        <li>Is the source's <b>expertise</b> actually relevant to the topic?</li>
+        <li>Could the source be <b>biased</b> — for example, a company promoting its own product?</li>
+      </ul>
+      <p>Keep this checklist; it will return in Session 7 (Challenging Supports), where you will use it to attack an opponent's evidence.</p>`
+    },
+    {
+      h: "3. Topic Focus — File Sharing",
+      body: `<p>Online file sharing lets people exchange documents, music, and videos instantly across the world — useful for collaboration between students, coworkers, and independent musicians building an audience without a record label. However, file sharing is also closely associated with piracy: illegally downloading copyrighted movies, games, and music. Supporters emphasize convenience and creative opportunity; critics emphasize lost revenue for artists, legal risk for users, and cybersecurity dangers (viruses hidden inside shared files).</p>
+      <p><b>Useful vocabulary:</b> file sharing, peer-to-peer (P2P), copyright infringement, royalty, piracy, exchange, exposure/publicity, malware.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Moodle Task 1 — Source Evaluation",
+      body: `<p>On Moodle, you will be given four short "evidence cards" about file sharing (some with sources, some without; some with dates, some without). For each, decide whether it is strong or weak evidence and explain why using the checklist above.</p>`
+    },
+    {
+      title: "Moodle Task 2 — Build Your Own Support",
+      body: `<p>Choose ONE reason: "File sharing harms the music industry" OR "File sharing helps independent artists." Search for one real statistic and one real expert opinion to support it, and submit both with their sources on Moodle.</p>`
+    }
+  ],
+  quiz: [
+    {q:"Why is this session structured as self-study?", options:["Because the topic is unimportant","To let students practice independent research at their own pace","Because there is no content to teach","Because Moodle replaces all future classes"], a:1, exp:"Independent research is a skill best practiced individually with guided materials."},
+    {q:"Which of these makes a statistic weaker as evidence?", options:["It includes a date","It is based on a very small, unclear sample","It comes from a government report","It is recent"], a:1, exp:"An unclear or too-small sample undermines a statistic's reliability."},
+    {q:"A company's own blog claiming its product is 'the best on the market' is an example of a source that may be...", options:["An unbiased expert","Outdated only","Biased","Impossible to check"], a:2, exp:"A company promoting its own product has an obvious conflict of interest."},
+    {q:"What is 'peer-to-peer' (P2P) file sharing?", options:["A method of sharing files directly between users' computers","A type of antivirus software","A government surveillance program","A kind of internet censorship"], a:0, exp:"P2P allows direct file exchange between users without a central server."},
+    {q:"According to the lecture, one benefit of file sharing for musicians is...", options:["Guaranteed royalties","Free publicity/exposure without needing a record label","Elimination of all copyright law","Legal protection from piracy"], a:1, exp:"Independent artists can gain exposure through file sharing/streaming."}
+  ],
+  videos: [
+    {
+      channel: "(Instructor to supplement)",
+      title: "Suggested search: \"file sharing pros and cons\" / \"is piracy stealing\" (VOA Learning English, PBS, or Reuters)",
+      url: "",
+      summary: "A confidently verified, topic-specific American-accent video for File Sharing could not be located within this session's research pass.",
+      analysis: "For this self-study week, the instructor is encouraged to browse VOA Learning English, PBS NewsHour, or Reuters/AP's official YouTube channels for a short explainer on digital piracy or streaming vs. downloading, and add the link directly into this slot on Moodle."
+    }
+  ]
+});
+
+// ---------------- SESSION 5 ----------------
+addSession({
+  week: 5,
+  title: "Organizing Your Opinion — The 1AC",
+  skillRef: "Discover Debate – Unit 4: Organizing Your Opinion (Macro & Micro Organization, Introductions & Conclusions) — Minitest 1",
+  topicRef: "Exploring Debate 2 – Unit 6: CCTV",
+  hasMinitest: true,
+  objectives: [
+    "Describe the three macro parts of a First Affirmative Constructive speech (1AC): Introduction, Points, Conclusion.",
+    "Describe the three micro parts of a single point: Signpost, Reason, Support.",
+    "Produce a correct debate introduction and conclusion using the standard formula.",
+    "Build arguments around the use of CCTV surveillance cameras."
+  ],
+  lecture: [
+    {
+      h: "1. The First Affirmative Constructive (1AC)",
+      body: `<p>The very first speech of a debate is called the <b>First Affirmative Constructive</b>, or <b>1AC</b>. It is called "constructive" because it builds the first floor of the affirmative case/house. Every 1AC has exactly three macro parts:</p>
+      <ol>
+        <li><b>Introduction</b> — greets the audience, states the resolution, and previews the signposts (reasons) to come.</li>
+        <li><b>Affirmative Points</b> — usually 3–4 points, each with a reason and supporting evidence.</li>
+        <li><b>Conclusion</b> — reviews the signposts and restates support for the resolution.</li>
+      </ol>`
+    },
+    {
+      h: "2. Micro Organization: Inside One Point",
+      body: `<p>Each point itself has three layers:</p>
+      <table class="mini-table">
+        <tr><th>Part</th><th>Function</th><th>Example</th></tr>
+        <tr><td><b>Signpost</b></td><td>A short name/label for the point</td><td>"Our first point is public safety."</td></tr>
+        <tr><td><b>Reason</b></td><td>The claim that point makes</td><td>"CCTV cameras deter crime because people behave differently when they know they are being watched."</td></tr>
+        <tr><td><b>Support</b></td><td>Evidence backing the reason</td><td>"A 2019 city report found a 15% drop in theft in areas with new cameras."</td></tr>
+      </table>
+      <p>Signposts should be short (one or two words) so the judge can easily write them down and refer back to them later in the round.</p>`
+    },
+    {
+      h: "3. Introduction and Conclusion Formulas",
+      body: `<p><b>Introduction formula:</b><br>
+      <i>"Thank you, Ladies and Gentlemen. We are debating the resolution [state resolution]. We, on the affirmative team, strongly support this resolution. We have [number] reasons: [signpost 1], [signpost 2], [signpost 3]."</i></p>
+      <p><b>Conclusion formula:</b><br>
+      <i>"Ladies and gentlemen, we have talked about [signpost 1], [signpost 2], and [signpost 3], and have clearly shown that [restate resolution]. For these reasons we beg to propose."</i></p>`
+    },
+    {
+      h: "4. Topic Focus — CCTV",
+      body: `<p>Closed-circuit television (CCTV) cameras are widely used in banks, airports, schools, and streets. Supporters argue cameras deter crime, provide evidence for police and courts, and give the public a sense of security. Critics argue that CCTV creates mutual distrust between citizens and government, that evidence for its crime-deterrent effect is thin, and that installing and monitoring cameras is expensive.</p>
+      <p><b>Useful vocabulary:</b> surveillance, deter, footage, monitor, invasion of privacy, mutual distrust, cost-effective, evidence.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Exercise A — Build a 1AC Skeleton",
+      body: `<p>Using the resolution "Schools should install CCTV cameras in classrooms," write: (1) a full introduction using the formula, (2) three signposts, and (3) one reason + one support for your first signpost.</p>`
+    },
+    {
+      title: "Exercise B — Pair Practice: Deliver the Intro & Conclusion",
+      body: `<p>In pairs, Partner A delivers the introduction they wrote; Partner B, acting as judge, writes down the resolution and the three signposts as they are announced — then reads them back to check accuracy.</p>`
+    }
+  ],
+  quiz: [
+    {q:"What are the three macro parts of a 1AC?", options:["Signpost, Reason, Support","Introduction, Points, Conclusion","Rebuttal, Cross-examination, Closing","Affirmative, Negative, Judge"], a:1, exp:"A 1AC has an Introduction, the Affirmative Points, and a Conclusion."},
+    {q:"What is a 'signpost' in a debate point?", options:["The evidence for a reason","A short label naming the point","The judge's final decision","The resolution itself"], a:1, exp:"A signpost is a short, memorable name for a point, e.g. 'cost' or 'safety'."},
+    {q:"In the micro-organization of ONE point, what comes after the Signpost?", options:["Conclusion","Reason","Rebuttal","Introduction"], a:1, exp:"Order is Signpost → Reason → Support."},
+    {q:"Why should signposts be kept short?", options:["To make the speech longer","So the judge can easily remember and refer back to them","Because long signposts are against the rules","They have no particular purpose"], a:1, exp:"Short signposts help the judge track the flow of arguments."},
+    {q:"According to the CCTV lecture, one argument FOR CCTV is that it...", options:["eliminates all crime completely","provides evidence for police and courts","is always inexpensive to install","has no effect on public feelings of safety"], a:1, exp:"CCTV footage can serve as evidence in investigations and court cases."},
+    {q:"What is the correct final line of the standard conclusion formula?", options:["\"Thank you for your attention.\"","\"For these reasons we beg to propose.\"","\"That is all I have to say.\"","\"I rest my case, your honor.\""], a:1, exp:"The formula ends with 'For these reasons we beg to propose.'"}
+  ],
+  videos: [
+    {
+      channel: "WIRED (Incognito Mode)",
+      title: "Has The U.S. Become A Surveillance State?",
+      url: "https://www.youtube.com/watch?v=iW22pj_wfLc",
+      summary: "An American explainer on the expansion of camera and digital surveillance across the United States, and the public debate over its costs and benefits.",
+      analysis: "Directly relevant to the CCTV topic; students can extract the safety-versus-privacy tension the video presents and turn it into signposts such as 'safety' and 'privacy' for their own 1AC practice."
+    },
+    {
+      channel: "PBS NewsHour",
+      title: "Police Cameras Help Solve Crimes, But Spark Privacy Debate",
+      url: "https://www.pbs.org/video/under-surveillance-1784147724/",
+      summary: "A recent PBS NewsHour report follows AI-powered license-plate cameras now installed in over 100,000 locations across the U.S., presenting the police view that they solve crimes alongside critics who warn they create a nationwide surveillance network.",
+      analysis: "This is a direct, up-to-date CCTV case study told in a calm, balanced two-sides format, giving students ready-made Expert Opinion evidence for both a pro-CCTV (public safety) and an anti-CCTV (privacy) case."
+    }
+  ]
+});
+
+// ---------------- SESSION 6 ----------------
+addSession({
+  week: 6,
+  title: "Refuting Explanations",
+  skillRef: "Discover Debate – Unit 5: Refuting Explanations (Refuting an Opinion, Types of Refutation, Point → Refutation)",
+  topicRef: "Exploring Debate 2 – Unit 7: Privacy of Public Figures",
+  objectives: [
+    "Define refutation and explain its purpose in a debate.",
+    "Classify a refutation as Not True / Not Always True / Not Necessarily True, or as Not Relevant / Not Significant / Easy to Solve.",
+    "Practice moving directly from an opponent's Point to a structured Refutation.",
+    "Build arguments about the privacy rights of public figures."
+  ],
+  lecture: [
+    {
+      h: "1. What Is Refutation?",
+      body: `<p><b>Refutation</b> means showing that an opponent's point is either untrue or unimportant. Debate is not just about building your own case — it is equally about testing the other side's case and showing the judge why it fails.</p>`
+    },
+    {
+      h: "2. Six Angles of Attack",
+      body: `<p>Every refutation falls into one of six categories, split into two families:</p>
+      <table class="mini-table">
+        <tr><th>Family: Truth</th><th>Meaning</th></tr>
+        <tr><td>Not True</td><td>The claim is simply false.</td></tr>
+        <tr><td>Not Always True</td><td>There are important exceptions.</td></tr>
+        <tr><td>Not Necessarily True</td><td>There is real doubt; it hasn't been proven.</td></tr>
+      </table>
+      <table class="mini-table">
+        <tr><th>Family: Importance</th><th>Meaning</th></tr>
+        <tr><td>Not Relevant</td><td>Even if true, it has nothing to do with the resolution.</td></tr>
+        <tr><td>Not Significant</td><td>The effect is real but too small to matter.</td></tr>
+        <tr><td>Easy to Solve</td><td>The problem is real but has a simple fix.</td></tr>
+      </table>
+      <p><b>Example:</b> Affirmative says, "Public figures have fewer rights to privacy because their salaries are paid for by public attention." Negative can refute: "That's <i>not necessarily true</i> — a celebrity's income comes from private companies and audiences choosing to pay for entertainment, not from taxes."</p>`
+    },
+    {
+      h: "3. The Point → Refutation Flow",
+      body: `<p>A clean refutation always references the exact point it attacks before disagreeing with it:</p>
+      <p><i>"Their [signpost] point was [rephrase their claim]. But this is [not true / not significant / etc.], because [your reasoning]."</i></p>
+      <p>Skipping the rephrase step confuses the judge about which point is being attacked.</p>`
+    },
+    {
+      h: "4. Topic Focus — Privacy of Public Figures",
+      body: `<p>Do politicians, celebrities, and athletes deserve the same privacy as ordinary citizens? Some argue public figures accept reduced privacy as the price of power and public attention — the public has a right to know if a lawmaker or role model is behaving honestly. Others argue that constant media and paparazzi attention on public figures' private lives is excessive, harmful to their families, and sometimes dangerous, pointing to tragic cases where aggressive photographers have endangered lives.</p>
+      <p><b>Useful vocabulary:</b> public figure, paparazzi, harass, accountability, role model, invasion of privacy, in the public interest.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Exercise A — Classify the Refutation",
+      body: `<p>Label each refutation with its type (Not True / Not Always True / Not Necessarily True / Not Relevant / Not Significant / Easy to Solve).</p>
+      <ol type="a">
+        <li>"Some celebrities never signed up for a public role — child actors, for example, never chose fame." (about "Public figures chose their fame")</li>
+        <li>"Being photographed in public once a month is not a serious burden." (about "Media attention ruins public figures' lives")</li>
+        <li>"Public figures can simply hire private security to manage unwanted attention." (about "Public figures can never protect their privacy")</li>
+      </ol>
+      <p class="key">Answer key: a) Not Always True  b) Not Significant  c) Easy to Solve</p>`
+    },
+    {
+      title: "Exercise B — Point to Refutation",
+      body: `<p>Your partner gives you this affirmative point: "Politicians should have no privacy because voters need full information to decide who to trust." Respond using the full Point → Refutation flow (rephrase, then attack with one of the six categories).</p>`
+    }
+  ],
+  quiz: [
+    {q:"What is the goal of refutation in a debate?", options:["To insult the opposing speaker","To show an opponent's point is untrue or unimportant","To repeat your own case louder","To avoid answering the opponent"], a:1, exp:"Refutation shows a point is false or doesn't matter."},
+    {q:"\"There is real doubt about this; it hasn't been proven\" describes which refutation type?", options:["Not Relevant","Not Necessarily True","Easy to Solve","Not Significant"], a:1, exp:"'Not Necessarily True' expresses genuine doubt, not certainty of falsehood."},
+    {q:"\"Even if true, this has nothing to do with the resolution\" describes...", options:["Not True","Not Relevant","Not Always True","Not Significant"], a:1, exp:"'Not Relevant' means it doesn't connect to the resolution."},
+    {q:"What should the FIRST step of a refutation be?", options:["State your own new point","Rephrase the opponent's claim before attacking it","Ask the judge a question","Say 'I disagree' and stop"], a:1, exp:"Rephrasing shows the judge exactly which claim is under attack."},
+    {q:"\"The problem is real but has a simple fix\" is which category?", options:["Not Significant","Easy to Solve","Not Necessarily True","Not Relevant"], a:1, exp:"This is the definition of 'Easy to Solve'."},
+    {q:"According to the lecture, one argument in FAVOR of reduced privacy for public figures is that...", options:["they never appear in the news","the public has a right to know if they behave honestly, since their influence affects others","privacy laws do not apply to anyone in society","private companies always protect their privacy"], a:1, exp:"Accountability to the public is the key pro-argument."}
+  ],
+  videos: [
+    {
+      channel: "(Instructor to supplement)",
+      title: "Suggested search: \"celebrity privacy vs. paparazzi law\" or \"do public figures have a right to privacy\" (VOA Learning English, PBS NewsHour, or CNN)",
+      url: "",
+      summary: "No fully verified, on-topic youth-debate-style video from an approved source (VOA / PBS SRL / CNN 10 / NSDA) could be confirmed for this specific unit at the time of writing.",
+      analysis: "A short clip on a real paparazzi-privacy case (e.g. celebrity anti-paparazzi laws in the U.S.) would let students practice the accountability-vs-privacy tension named in the lecture; please preview any clip you choose for length and classroom appropriateness before assigning it."
+    },
+    {
+      channel: "WIRED / Incognito Mode-style explainer",
+      title: "America's Surveillance State | Your Privacy is Dead — Here's Who's Tracking You",
+      url: "https://www.youtube.com/watch?v=9IFMZA6Iap0",
+      summary: "An American documentary-style explainer describing how thoroughly modern surveillance tools can track any individual's movements and communications.",
+      analysis: "This clip helps students argue the Negative side — that everyone, including public figures, is losing meaningful privacy — giving material for a 'Not Significant' or 'Not True' refutation of the claim that public figures alone lack privacy."
+    }
+  ]
+});
+
+// ---------------- SESSION 7 ----------------
+addSession({
+  week: 7,
+  title: "Challenging Supports",
+  skillRef: "Discover Debate – Unit 6: Challenging Supports (Asking Questions, Refuting a Source, Question & Challenge Supports)",
+  topicRef: "Exploring Debate 2 – Unit 9: Advertisement",
+  objectives: [
+    "Use a diagnostic checklist to find weaknesses in an opponent's evidence.",
+    "Recognize the six common support problems: no source, no explanation, no date, questionable statistic, questionable expertise, biased source.",
+    "Practice the four-part refutation sequence: Signpost → Rephrase → Negation & Why → Rationale.",
+    "Build arguments about the ethics and effects of advertising."
+  ],
+  lecture: [
+    {
+      h: "1. Not All Evidence Is Equal",
+      body: `<p>Session 3 taught you how to build support. This session teaches you how to <b>tear it down</b> — a critical skill, since even a well-organized case can be defeated if its evidence doesn't hold up to scrutiny.</p>`
+    },
+    {
+      h: "2. The Support-Testing Checklist",
+      body: `<p>Ask these six questions, in order, about any piece of evidence your opponent offers:</p>
+      <ol>
+        <li>Is a source given at all?</li>
+        <li>Is an explanation given?</li>
+        <li>Is a date given?</li>
+        <li>Is the statistic questionable (small sample, unclear method)?</li>
+        <li>Is the source's expertise questionable (not actually relevant to this topic)?</li>
+        <li>Could the source be biased (something to gain from the claim)?</li>
+      </ol>
+      <p>As soon as you find a weakness, you have your attack.</p>`
+    },
+    {
+      h: "3. The Four-Part Refutation Sequence",
+      body: `<table class="mini-table">
+        <tr><th>Step</th><th>Function</th></tr>
+        <tr><td>1. Signpost</td><td>Name which point you are attacking.</td></tr>
+        <tr><td>2. Rephrase</td><td>Restate their claim in your own words.</td></tr>
+        <tr><td>3. Negation & Why</td><td>Say it is not true/relevant/etc. and briefly say why.</td></tr>
+        <tr><td>4. Rationale</td><td>Give your full reasoning or counter-evidence.</td></tr>
+      </table>
+      <p><b>Example:</b> "Their point was cost. They claimed that a magazine article stated that Brand X is cheaper. But this is questionable evidence — no date was given for that claim, so we don't know if the price is still accurate today."</p>`
+    },
+    {
+      h: "4. Topic Focus — Advertisement",
+      body: `<p>Is advertising good or bad for society? Supporters argue ads inform consumers about products, fund free content (TV, websites), and create jobs across many industries. Critics argue that ads exploit emotions, mislead consumers with unrealistic claims, and particularly target vulnerable groups like children, encouraging desires for products people don't need.</p>
+      <p><b>Useful vocabulary:</b> misleading, exploit, vulnerable, target audience, brand awareness, consumer, endorsement, influencer.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Exercise A — Find the Weakness",
+      body: `<p>Each supporting statement below has one weakness. Identify it using the checklist.</p>
+      <ol type="a">
+        <li>"Ads work — everyone knows that."</li>
+        <li>"A 1998 survey found that 60% of shoppers remembered a TV ad." </li>
+        <li>"According to the CEO of the advertising agency that made this campaign, this ad is very effective."</li>
+      </ol>
+      <p class="key">Answer key: a) no source/no explanation  b) date is very old — questionable relevance today  c) source may be biased (self-interest)</p>`
+    },
+    {
+      title: "Exercise B — Full Refutation Practice",
+      body: `<p>Your partner presents this point: "Advertising should be more heavily regulated because a study by an unnamed 'consumer group' found that 90% of ads are misleading." Deliver a complete four-part refutation (Signpost → Rephrase → Negation & Why → Rationale).</p>`
+    }
+  ],
+  quiz: [
+    {q:"What is the purpose of the six-question support checklist?", options:["To write a new argument","To find weaknesses in an opponent's evidence","To decide who speaks first","To calculate a debate score"], a:1, exp:"The checklist is a diagnostic tool for testing evidence quality."},
+    {q:"Which of these is NOT one of the six checklist questions?", options:["Is a source given?","Is a date given?","Is the speaker taller than the judge?","Could the source be biased?"], a:2, exp:"Height is irrelevant; the real checklist covers source, explanation, date, statistic, expertise, and bias."},
+    {q:"What is the correct order of the four-part refutation sequence?", options:["Rationale → Signpost → Rephrase → Negation","Signpost → Rephrase → Negation & Why → Rationale","Negation → Rephrase → Signpost → Rationale","Rephrase → Rationale → Signpost → Negation"], a:1, exp:"The correct order is Signpost, Rephrase, Negation & Why, Rationale."},
+    {q:"An advertising agency's CEO praising his own agency's ad campaign is an example of a source that may be...", options:["An unbiased expert","Missing a date","Biased due to self-interest","Impossible to identify"], a:2, exp:"The CEO has a clear personal/financial interest in the claim."},
+    {q:"According to the lecture, one criticism of advertising is that it...", options:["never targets any specific group","can exploit consumers' emotions and mislead them","always provides 100% accurate information","has no effect on children"], a:1, exp:"Critics argue ads can be manipulative and misleading."},
+    {q:"Why is the 'Rephrase' step important in a refutation?", options:["It makes the speech longer","It clearly shows the judge exactly which claim is being attacked","It replaces the need for a Rationale","It is optional and rarely used"], a:1, exp:"Rephrasing anchors the refutation to a specific claim."}
+  ],
+  videos: [
+    {
+      channel: "PBS NewsHour",
+      title: "Social Media Trend Encourages Young People to Buy Less",
+      url: "https://www.pbs.org/video/consuming-less-1735597339/",
+      summary: "A PBS NewsHour correspondent interviews a consumer researcher about how influencer marketing pushes young people toward constant new purchases, alongside a growing 'de-influencing' trend that pushes back against overconsumption.",
+      analysis: "A near-perfect match for the Advertisement topic: it directly names influencer-driven advertising as a source of possible bias, which students can connect to the 'biased source' item on the Session 7 checklist, while also modeling a calm two-sides framing."
+    },
+    {
+      channel: "PBS NewsHour",
+      title: "New Illinois Law Protects Money Children Earn as Social Media Influencers",
+      url: "https://www.pbs.org/newshour/show/new-illinois-law-protects-money-children-earn-as-social-media-influencers",
+      summary: "A report on a new U.S. state law, driven by a teenage advocate, that protects the earnings of child social-media influencers who promote products and brands to their young audiences.",
+      analysis: "Useful as a second lens on advertising: students can practice identifying whether the report's claims rely on Statistics, Expert/Legal Opinion, or a personal Example (the teen advocate's own story), and can debate whether advertising aimed through children needs special regulation."
+    }
+  ]
+});
+
+// ---------------- SESSION 8 (self-study) ----------------
+addSession({
+  week: 8,
+  title: "Self-Study on Moodle — Making Refutations & Critiquing an Advertisement",
+  skillRef: "Discover Debate – Unit 5–6: Making Refutations, Question & Refute, Critiquing an Advertisement",
+  topicRef: "Exploring Debate 2 – Unit 14: Arranged Marriage",
+  selfStudy: true,
+  objectives: [
+    "Independently write full refutations for four given affirmative points.",
+    "Apply the six-question support checklist to a real advertisement found online or on TV.",
+    "Build arguments around the practice of arranged marriage."
+  ],
+  lecture: [
+    {
+      h: "1. Consolidating Sessions 6–7",
+      body: `<p>This self-study session asks you to combine what you learned in Sessions 6 and 7 without a live lecture: given an opponent's point, you must (a) decide what is wrong with either the <i>reasoning</i> or the <i>evidence</i>, and (b) deliver a complete, correctly-sequenced refutation.</p>`
+    },
+    {
+      h: "2. Critiquing a Real Advertisement",
+      body: `<p>On Moodle you will watch or view one real advertisement and answer guided questions: What claim is being made? What evidence (if any) backs it up? Which of the six checklist weaknesses applies? Is the ad appealing mainly to logic, emotion, or authority?</p>`
+    },
+    {
+      h: "3. Topic Focus — Arranged Marriage",
+      body: `<p>In an arranged marriage, parents or family members select a marriage partner for their child, often considering financial stability, family reputation, and shared values. Supporters point to statistically lower divorce rates in many arranged-marriage cultures, strong family support systems, and the removal of financial/social risk from the decision. Critics argue that arranged marriage removes personal choice and romantic love, can pressure people into relationships they did not want, and may be difficult to exit once cultural or family pressure is involved.</p>
+      <p><b>Useful vocabulary:</b> arranged marriage, compatible, dowry, tradition, consent, divorce rate, matchmaker, family obligation.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Moodle Task 1 — Four Refutations",
+      body: `<p>You will be given four affirmative points about arranged marriage. For each, write a complete four-part refutation (Signpost → Rephrase → Negation & Why → Rationale) and submit it on Moodle for automatic and peer feedback.</p>`
+    },
+    {
+      title: "Moodle Task 2 — Ad Critique Worksheet",
+      body: `<p>Complete the guided worksheet analyzing one advertisement of your choice using the six-question checklist from Session 7.</p>`
+    }
+  ],
+  quiz: [
+    {q:"What two skills does this self-study session combine?", options:["Signposting and conclusions","Refutation and evidence-critique","Introductions and rebuttals","Flowing and scoring"], a:1, exp:"It merges refutation practice (Unit 5) with support-critiquing (Unit 6)."},
+    {q:"When critiquing a real advertisement, what should you first identify?", options:["The actors' names","The claim being made","The length of the ad","The TV channel it aired on"], a:1, exp:"You must identify the core claim before evaluating its support."},
+    {q:"According to the lecture, one argument FOR arranged marriage is...", options:["it guarantees romantic love instantly","it is linked to lower divorce rates in some cultures due to family vetting","it removes all family involvement","it has no cultural history"], a:1, exp:"Supporters cite statistically lower divorce rates as a strength."},
+    {q:"According to the lecture, one argument AGAINST arranged marriage is...", options:["it always improves financial stability","it can remove personal choice and pressure someone into a relationship","it eliminates family obligations entirely","it is required by every religion"], a:1, exp:"Critics highlight the loss of personal choice and potential pressure."},
+    {q:"What is the last step in the four-part refutation sequence?", options:["Signpost","Rephrase","Negation & Why","Rationale"], a:3, exp:"The sequence ends with the Rationale — the full reasoning."}
+  ],
+  videos: [
+    {
+      channel: "The Ramsey Show / EntreLeadership (American personal-advice program)",
+      title: "Should I Go Through With An Arranged Marriage?",
+      url: "https://www.youtube.com/watch?v=FUrZ9ZHw3xQ",
+      summary: "A caller on an American radio/podcast advice show discusses considering an arranged marriage, and the American hosts respond with their perspective.",
+      analysis: "This short, conversational American clip offers a real, spontaneous discussion of arranged marriage from a U.S. cultural perspective — useful for practicing refutation of an opinion different from one's own cultural background."
+    },
+    {
+      channel: "(Instructor to supplement)",
+      title: "Suggested search: \"arranged marriage vs love marriage\" documentary interviews",
+      url: "",
+      summary: "A confidently verified second American-accent video on arranged marriage could not be located within this session's research pass.",
+      analysis: "The instructor may add a second clip — for example, an NBC News or PBS interview segment on arranged marriage and matchmaking — to balance the first, more casual video with a more journalistic tone."
+    }
+  ]
+});
+
+// ---------------- SESSION 9 ----------------
+addSession({
+  week: 9,
+  title: "Organizing Your Refutation — The 1NC",
+  skillRef: "Discover Debate – Unit 7: Organizing Your Refutation (Macro & Micro Organization for the 1NC, Refutation Format) — Minitest 2",
+  topicRef: "Exploring Debate 2 – Unit 10: Legacy Preference",
+  hasMinitest: true,
+  objectives: [
+    "Describe the five macro parts of the First Negative Constructive speech (1NC).",
+    "Apply the Signpost–Rephrase–Negation–Rationale structure inside a full 1NC speech.",
+    "Write a Transition sentence linking refutation to a new negative case.",
+    "Build arguments about legacy preference in college admissions."
+  ],
+  lecture: [
+    {
+      h: "1. The First Negative Constructive (1NC)",
+      body: `<p>The second speech of a debate is the <b>1NC</b>, delivered by the Negative team. Unlike the 1AC, the 1NC has <b>five</b> macro parts:</p>
+      <ol>
+        <li><b>Introduction</b> — greets the audience and states the Negative's position.</li>
+        <li><b>Refutations</b> — attacks each point of the 1AC in turn.</li>
+        <li><b>Transition</b> — a bridge sentence moving from refutation into the Negative's own case.</li>
+        <li><b>Negative Points</b> — the Negative team's own reasons and evidence.</li>
+        <li><b>Conclusion</b> — reviews everything and asks the judge to reject the resolution.</li>
+      </ol>`
+    },
+    {
+      h: "2. Inside Each Refutation",
+      body: `<p>Just as a 1AC point has Signpost–Reason–Support, each refutation inside a 1NC has its own four-part micro-structure (introduced in Session 7): <b>Signpost → Rephrase → Negation → Rationale</b>. Stacking several of these back-to-back, one per affirmative point, forms the whole Refutations section of the 1NC.</p>`
+    },
+    {
+      h: "3. Writing a Transition",
+      body: `<p>A transition is a short sentence that tells the judge: "We have now finished attacking their case; here is our own." Example: <i>"Now that we have shown why the affirmative's points fail, we would like to present our own case against the resolution."</i></p>`
+    },
+    {
+      h: "4. Topic Focus — Legacy Preference",
+      body: `<p>Should universities give admissions preference to "legacy" applicants — children of alumni? Supporters argue legacy admissions strengthen alumni relationships, encourage donations that fund financial aid for other students, and build school tradition. Critics argue legacy preference is fundamentally unfair, since it rewards family wealth and connections rather than merit, and disproportionately benefits already-privileged applicants.</p>
+      <p><b>Useful vocabulary:</b> legacy applicant, alumni, meritocracy, endowment, donation, undeserved advantage, socioeconomic privilege.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Exercise A — Order the 1NC",
+      body: `<p>Put these five labels in the correct order for a 1NC: Conclusion, Refutations, Transition, Negative Points, Introduction.</p>
+      <p class="key">Answer: Introduction → Refutations → Transition → Negative Points → Conclusion</p>`
+    },
+    {
+      title: "Exercise B — Write a Mini 1NC",
+      body: `<p>Given the affirmative point "Legacy admissions help colleges raise money for financial aid," write: one full refutation (4 parts), one transition sentence, and one negative signpost + reason of your own.</p>`
+    }
+  ],
+  quiz: [
+    {q:"How many macro parts does a 1NC have?", options:["Three","Four","Five","Six"], a:2, exp:"A 1NC has Introduction, Refutations, Transition, Negative Points, and Conclusion."},
+    {q:"What is the purpose of the Transition in a 1NC?", options:["To end the debate early","To bridge from refuting the Aff case into presenting the Neg's own case","To restate the resolution word for word","To introduce the judge"], a:1, exp:"The transition links refutation to the negative's own new arguments."},
+    {q:"Which structure applies INSIDE each individual refutation in a 1NC?", options:["Introduction–Points–Conclusion","Signpost–Rephrase–Negation–Rationale","Claim–Warrant–Impact","Affirmative–Negative–Judge"], a:1, exp:"This four-part structure organizes each refutation."},
+    {q:"According to the lecture, one argument FOR legacy admissions is that they...", options:["guarantee equal opportunity for all applicants","help fund financial aid for other students through alumni donations","are required by national law","eliminate the need for tuition"], a:1, exp:"Alumni donation revenue is the key pro-argument cited."},
+    {q:"According to the lecture, one argument AGAINST legacy admissions is that they...", options:["reward merit above all else","reward family wealth/connections rather than merit","are used only at public universities","increase diversity automatically"], a:1, exp:"Critics say legacy preference favors privilege over merit."},
+    {q:"Which comes first in a 1NC — Refutations or the Negative's own Points?", options:["Refutations come first","Negative Points always come first","They always happen at the same time","Order does not matter"], a:0, exp:"Refutations of the Aff case precede the Negative's own new points."}
+  ],
+  videos: [
+    {
+      channel: "PBS NewsHour (American public broadcaster)",
+      title: "Affirmative Action Ruling Prompts New Push to End Legacy Admissions",
+      url: "https://www.pbs.org/newshour/show/affirmative-action-ruling-prompts-new-push-to-end-legacy-admissions",
+      summary: "PBS NewsHour anchor Geoff Bennett interviews NAACP president Derrick Johnson about renewed calls to end legacy admissions at American universities after a Supreme Court ruling on affirmative action.",
+      analysis: "This clear, formal-register interview (also available on PBS NewsHour's official YouTube channel) gives students a real Expert Opinion source and concrete statistics they can plug directly into 1NC or 1AC points on legacy preference."
+    },
+    {
+      channel: "PBS NewsHour (American public broadcaster)",
+      title: "U.S. Colleges Divided Over Whether to End Legacy Admissions",
+      url: "https://www.pbs.org/newshour/show/u-s-colleges-divided-over-whether-to-end-legacy-admissions",
+      summary: "PBS NewsHour speaks with author and legal scholar Evan Mandery about acceptance-rate data showing how much legacy status increases an applicant's chances at elite U.S. universities.",
+      analysis: "The interview supplies precise statistics (e.g., legacy applicants admitted at several times the rate of non-legacy applicants), ideal Support material for either building or refuting a point about fairness in admissions."
+    }
+  ]
+});
+
+// ---------------- SESSION 10 ----------------
+addSession({
+  week: 10,
+  title: "Debating an Opinion — Formats & the Rebuttal",
+  skillRef: "Discover Debate – Unit 8: Debating an Opinion (Debate Formats, Responding to Attacks, Rebuttal Speeches)",
+  topicRef: "Exploring Debate 2 – Unit 12: Death Penalty",
+  objectives: [
+    "Name and order the six speeches of a full debate: 1AC, 1NC, 2AC, 2NC, NR, AR.",
+    "Explain the specific purpose of each speech in the chain.",
+    "Distinguish a Constructive speech from a Rebuttal speech.",
+    "Build arguments for and against capital punishment."
+  ],
+  lecture: [
+    {
+      h: "1. The Six-Speech Debate Chain",
+      body: `<p>A full two-on-two debate round typically has six speeches, alternating between teams:</p>
+      <table class="mini-table">
+        <tr><th>#</th><th>Speech</th><th>Team</th><th>Type</th></tr>
+        <tr><td>1</td><td>1AC — First Affirmative Constructive</td><td>Aff</td><td>Constructive</td></tr>
+        <tr><td>2</td><td>1NC — First Negative Constructive</td><td>Neg</td><td>Constructive</td></tr>
+        <tr><td>3</td><td>2AC — Second Affirmative Constructive</td><td>Aff</td><td>Constructive</td></tr>
+        <tr><td>4</td><td>2NC — Second Negative Constructive</td><td>Neg</td><td>Constructive</td></tr>
+        <tr><td>5</td><td>NR — Negative Rebuttal</td><td>Neg</td><td>Rebuttal</td></tr>
+        <tr><td>6</td><td>AR — Affirmative Rebuttal</td><td>Aff</td><td>Rebuttal</td></tr>
+      </table>`
+    },
+    {
+      h: "2. Constructive vs. Rebuttal",
+      body: `<p>A <b>Constructive</b> speech may introduce brand-new points and evidence. A <b>Rebuttal</b> speech may NOT introduce new points — its only job is to defend or attack points already on the table and summarize why your team has won. This rule keeps debates focused instead of spiraling into endless new arguments.</p>`
+    },
+    {
+      h: "3. Responding to Attacks",
+      body: `<p>When your case is attacked, you have three broad response strategies: <b>defend</b> (show the refutation itself is flawed), <b>concede but minimize</b> (accept a small point but show it doesn't damage your overall case), or <b>outweigh</b> (accept the attack but show your remaining points are still stronger). Simply repeating your original point without addressing the attack is considered a "dropped" argument and usually costs you the point in the judge's eyes.</p>`
+    },
+    {
+      h: "4. Topic Focus — Death Penalty",
+      body: `<p>Should the death penalty be used to punish the most serious crimes? Supporters argue it deters crime, gives closure to victims' families, and protects other inmates and guards from dangerous repeat offenders. Critics argue that innocent people have been wrongly executed in the past, that it is more expensive than life imprisonment once endless appeals are included, and that it can be seen as ethically hypocritical — killing to show that killing is wrong.</p>
+      <p><b>Useful vocabulary:</b> capital punishment, deterrent, execution, wrongful conviction, closure, appeal, ethical, irreversible.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Exercise A — Sequence the Speeches",
+      body: `<p>Put in the correct order: NR, 1AC, 2NC, AR, 1NC, 2AC.</p>
+      <p class="key">Answer: 1AC → 1NC → 2AC → 2NC → NR → AR</p>`
+    },
+    {
+      title: "Exercise B — Constructive or Rebuttal?",
+      body: `<p>For each situation, decide if it is allowed in a Rebuttal speech: (1) Introducing a brand-new statistic never mentioned before. (2) Reminding the judge of evidence given earlier and explaining why it still stands. (3) Summarizing why your side has won more points overall.</p>
+      <p class="key">Answer: (1) Not allowed in a rebuttal  (2) Allowed  (3) Allowed</p>`
+    }
+  ],
+  quiz: [
+    {q:"How many speeches are in a full six-speech debate round?", options:["Four","Five","Six","Eight"], a:2, exp:"The chain is 1AC, 1NC, 2AC, 2NC, NR, AR — six speeches total."},
+    {q:"Which speech comes immediately after the 1NC?", options:["2NC","AR","2AC","NR"], a:2, exp:"Order: 1AC, 1NC, 2AC, 2NC, NR, AR."},
+    {q:"What is NOT allowed in a Rebuttal speech?", options:["Defending an earlier point","Summarizing why your team won","Introducing brand-new points and evidence","Referring back to earlier evidence"], a:2, exp:"Rebuttals cannot introduce new arguments/evidence."},
+    {q:"An argument that is attacked but never responded to by its own team is called a...", options:["Signpost","Transition","Dropped argument","Resolution"], a:2, exp:"An unanswered attack is a 'dropped' argument, usually counted against that team."},
+    {q:"According to the lecture, one argument FOR the death penalty is that it...", options:["is always cheaper than life imprisonment","may deter crime and give victims' families closure","guarantees no innocent person is ever executed","has no ethical concerns at all"], a:1, exp:"Deterrence and closure for victims' families are the key pro-arguments."},
+    {q:"According to the lecture, one argument AGAINST the death penalty is that it...", options:["has never resulted in a wrongful execution","can be more expensive than life imprisonment due to lengthy appeals","is required in every legal system","always increases crime rates"], a:1, exp:"Extended appeals can make capital cases more costly than life imprisonment."}
+  ],
+  videos: [
+    {
+      channel: "NAACP Legal Defense Fund (LDF)",
+      title: "The Death Penalty Explained",
+      url: "https://www.youtube.com/watch?v=ZxFBjdrR16Q",
+      summary: "An American civil rights organization explains the history of capital punishment in the United States and frames it as an issue connected to racial justice and wrongful convictions.",
+      analysis: "This video offers a clear Negative-leaning Expert Opinion source (a legal organization) with specific claims students can either support or challenge using the Session 7 checklist for source bias."
+    },
+    {
+      channel: "VICE News",
+      title: "Should There Be A Death Penalty? — The People Speak",
+      url: "https://www.youtube.com/watch?v=ka1B59ir1mI",
+      summary: "American VICE News correspondents interview ordinary people around the world with a range of views on capital punishment, from strong support to strong opposition.",
+      analysis: "The street-interview format models real spoken opinions (not scripted arguments), which is excellent listening practice for identifying Value, Policy, and Fact-type claims 'in the wild' before the class debate."
+    }
+  ]
+});
+
+// ---------------- SESSION 11 ----------------
+addSession({
+  week: 11,
+  title: "Rebuttal Speeches & Flowing a Debate",
+  skillRef: "Discover Debate – Unit 8: Debating an Opinion (Rebuttal Speeches, Flowing a Debate, NR → AR, full chain practice)",
+  topicRef: "Exploring Debate 2 – Unit 13: Abortion",
+  objectives: [
+    "Explain what 'flowing' a debate means and why debaters take flow notes.",
+    "Practice writing the Negative Rebuttal (NR) and Affirmative Rebuttal (AR).",
+    "Predict likely opposing arguments before hearing them, as a way to sharpen listening and argument-building skills.",
+    "Build arguments on the highly sensitive topic of abortion, with an emphasis on respectful, evidence-based debate."
+  ],
+  lecture: [
+    {
+      h: "1. What Is 'Flowing'?",
+      body: `<p><b>Flowing</b> is the specialized note-taking system debaters use to track every point, refutation, and rebuttal across all six speeches in real time. A flow sheet is usually organized in columns, one per speech, with arrows connecting each attack to the point it responds to. Good flowing lets a debater instantly see which of the opponent's arguments were never answered — these "dropped" arguments are often the easiest way to win a round.</p>`
+    },
+    {
+      h: "2. The Rebuttal Speeches: NR and AR",
+      body: `<p>The <b>Negative Rebuttal (NR)</b> is the Negative team's last chance to speak. It should: (1) briefly remind the judge of the strongest negative points, (2) answer the Affirmative's most recent attacks, and (3) explain clearly why the Negative should win.</p>
+      <p>The <b>Affirmative Rebuttal (AR)</b> is the very last speech of the entire debate. It carries extra weight because the Negative cannot respond to it — the Affirmative gets the "last word." A strong AR crystallizes the whole debate into 2–3 key reasons the judge should vote Affirmative.</p>`
+    },
+    {
+      h: "3. Predicting the Opponent",
+      body: `<p>Before ever hearing the opposing team, experienced debaters try to predict likely objections to their own case and prepare rebuttals in advance. This "pre-flowing" habit dramatically speeds up in-round thinking.</p>`
+    },
+    {
+      h: "4. Topic Focus — Abortion (Handle With Sensitivity)",
+      body: `<p>Abortion is one of the most emotionally and ethically sensitive debate topics; the goal of this session is to practice structured, respectful, evidence-based argumentation — not to reach a personal or political conclusion. Those who support access to abortion generally argue that decisions about one's own body and pregnancy should belong to the individual, and that unsafe illegal procedures put women's health at serious risk when legal options are unavailable. Those who oppose abortion generally argue that a fetus has a right to life that outweighs other considerations, and point to alternatives such as adoption. Instructors should set clear ground rules for respectful, fact-based language before beginning this unit.</p>
+      <p><b>Useful vocabulary:</b> reproductive rights, termination, bodily autonomy, adoption, ethical dilemma, legislation, restriction.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Exercise A — Read a Flow Sheet",
+      body: `<p>Given a simplified flow sheet showing three affirmative points and the negative's responses, identify which affirmative point was never answered by the negative team (a "dropped" argument).</p>`
+    },
+    {
+      title: "Exercise B — Write an NR and an AR",
+      body: `<p>Given a short summary of a four-speech debate on a neutral resolution (e.g., "Homework should be reduced in high schools"), write a 4–5 sentence Negative Rebuttal and a 4–5 sentence Affirmative Rebuttal.</p>`
+    }
+  ],
+  quiz: [
+    {q:"What is the purpose of 'flowing' a debate?", options:["To decide the debate topic","To take structured notes tracking every argument across all speeches","To score how loudly a speaker talks","To replace the need for evidence"], a:1, exp:"Flowing tracks arguments and responses across the whole debate."},
+    {q:"Which team gives the very LAST speech of a full debate?", options:["Negative, via the NR","Affirmative, via the AR","Both teams speak simultaneously","The judge speaks last"], a:1, exp:"The Affirmative Rebuttal (AR) is the final speech."},
+    {q:"An argument that is never responded to across the whole flow is called...", options:["A signpost","A resolution","A dropped argument","A transition"], a:2, exp:"An unanswered argument is 'dropped' and typically favors the side that raised it."},
+    {q:"What should experienced debaters do BEFORE hearing the opposing team speak?", options:["Nothing — preparation is not useful","Predict likely objections and prepare responses in advance","Wait passively for the judge's instructions","Change their own resolution"], a:1, exp:"Predicting objections in advance ('pre-flowing') speeds up in-round thinking."},
+    {q:"According to the lecture, this session's topic should be handled with...", options:["No particular care, since it is 'just a school topic'","Sensitivity, respect, and evidence-based, non-personal language","Only jokes to keep the mood light","Avoidance — the topic should never be discussed"], a:1, exp:"Sensitive topics require respectful, fact-based classroom ground rules."}
+  ],
+  videos: [
+    {
+      channel: "University of Michigan (Roe v. Wade Teach-Out)",
+      title: "Patient Realities — Dr. Lisa Harris",
+      url: "https://youtu.be/rU1CKbDMdMU",
+      summary: "An American physician discusses, in an academic and measured tone, the medical realities patients face regarding pregnancy decisions in the United States.",
+      analysis: "Produced by a U.S. university as part of an academic teach-out (not an advocacy campaign), this short clip models the calm, factual register instructors should encourage for this sensitive topic, and can serve as an Expert Opinion support for either side's evidence-gathering."
+    },
+    {
+      channel: "(Instructor to supplement)",
+      title: "Suggested search: official U.S. university or public-health channel explainer on the legal history of abortion in America",
+      url: "",
+      summary: "A confidently verified second American-accent, classroom-appropriate video could not be located within this session's research pass.",
+      analysis: "Given the sensitivity of the topic, the instructor should personally preview any second video before use — for example, a PBS NewsHour or university law-school explainer on the legal history of Roe v. Wade — rather than relying on general search results."
+    }
+  ]
+});
+
+// ---------------- SESSION 12 (self-study) ----------------
+addSession({
+  week: 12,
+  title: "Self-Study on Moodle — Flowing a Complete Debate & Choosing Resolutions",
+  skillRef: "Discover Debate – Unit 9: Discover Debate (Flow a Complete Debate, Debate Resolutions, Topics/Advanced Topics)",
+  topicRef: "Exploring Debate 2 – Unit 20: Human Nature",
+  selfStudy: true,
+  objectives: [
+    "Independently flow a full recorded six-speech debate from start to finish.",
+    "Evaluate a set of sample resolutions for debatability (balance, clarity, controversy).",
+    "Build arguments around the philosophical question of whether human nature is fundamentally good or evil."
+  ],
+  lecture: [
+    {
+      h: "1. Flowing an Entire Debate Independently",
+      body: `<p>On Moodle you will listen to (or read the transcript of) a complete six-speech debate and produce your own flow sheet, tracking every point, refutation, and rebuttal. This consolidates everything learned since Session 5.</p>`
+    },
+    {
+      h: "2. What Makes a Good Resolution?",
+      body: `<p>Not every statement makes a good debate resolution. A strong resolution is:</p>
+      <ul>
+        <li><b>Balanced</b> — both sides can find real arguments and evidence.</li>
+        <li><b>Clear</b> — it avoids vague or ambiguous wording.</li>
+        <li><b>Controversial but reasonable</b> — genuine people disagree, but neither side is absurd.</li>
+        <li><b>Single-issue</b> — it does not silently combine two separate questions.</li>
+      </ul>`
+    },
+    {
+      h: "3. Topic Focus — Human Nature: Good or Evil?",
+      body: `<p>This ancient philosophical question makes an excellent advanced debate topic because strong evidence exists on both sides. Those who argue humans are fundamentally good point to everyday kindness, charity, parental love, and cooperation. Those who argue humans are fundamentally selfish or capable of great evil point to crime, war, and extreme inequality as evidence of humanity's darker tendencies. Philosophers have debated this question for centuries without final resolution — which is exactly what makes it a well-balanced resolution for classroom debate.</p>
+      <p><b>Useful vocabulary:</b> inherent, philosophical, altruism, self-interest, morality, virtue, corrupt, compassion.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Moodle Task 1 — Independent Flow",
+      body: `<p>Listen to/read the provided sample debate transcript and submit your completed flow sheet, marking any dropped arguments you find.</p>`
+    },
+    {
+      title: "Moodle Task 2 — Evaluate Resolutions",
+      body: `<p>For each of five sample resolutions provided on Moodle, decide whether it is Balanced/Clear/Controversial-but-reasonable/Single-issue, and rewrite any that fail one of these tests.</p>`
+    }
+  ],
+  quiz: [
+    {q:"What does it mean for a resolution to be 'balanced'?", options:["It uses formal grammar","Both sides can find real arguments and evidence","It only favors the Affirmative team","It has exactly four words"], a:1, exp:"A balanced resolution gives both sides genuine material to argue."},
+    {q:"Why is a vague resolution a problem for debate?", options:["It makes speeches too short","Both teams may argue about different things without realizing it","Vague resolutions are always Policy-type","There is no real problem"], a:1, exp:"Ambiguity causes teams to talk past each other instead of clashing directly."},
+    {q:"What should a 'single-issue' resolution avoid?", options:["Any controversy","Silently combining two separate questions into one","Clear wording","Balanced arguments"], a:1, exp:"Combining two questions makes it unclear which one is actually being debated."},
+    {q:"According to the lecture, one argument that humans are fundamentally GOOD points to...", options:["war and crime","everyday kindness, charity, and cooperation","extreme inequality","nothing — there is no such argument"], a:1, exp:"Everyday kindness and cooperation support the 'humans are good' side."},
+    {q:"Why is 'Human Nature: Good or Evil?' considered a good advanced resolution?", options:["It has an obvious, agreed-upon answer","Strong evidence and reasonable arguments exist on both sides","It is not really debatable","It only interests philosophers"], a:1, exp:"Balanced, well-supported arguments on both sides make it ideal for debate."}
+  ],
+  videos: [
+    {
+      channel: "(Instructor to supplement)",
+      title: "Suggested search: \"is human nature good or evil\" philosophy explainer (Big Think, TED-Ed, or a U.S. university lecture channel)",
+      url: "",
+      summary: "A confidently verified, topic-specific American-accent video on human nature could not be located within this session's research pass.",
+      analysis: "Because this is a self-study week, the instructor is encouraged to select a short American philosophy-explainer video (e.g., from Big Think or a university channel) and upload the direct link to Moodle for students to use as a discussion-starter."
+    }
+  ]
+});
+
+// ---------------- SESSION 13 ----------------
+addSession({
+  week: 13,
+  title: "Preparing Full Cases — Constructive, Refutation & Rebuttal Together",
+  skillRef: "Discover Debate – Units 7–9: Preparing Affirmative & Negative Cases, Constructive Speeches, Refutation, Rebuttal, Flowing a Complete Debate — Minitest 3",
+  topicRef: "Exploring Debate 2 – Unit 15: Social Networking",
+  hasMinitest: true,
+  objectives: [
+    "Prepare a complete Affirmative case AND a complete Negative case on the same resolution.",
+    "Integrate constructive points, refutation, and rebuttal into a single coherent case file.",
+    "Flow a live in-class debate performed by classmates.",
+    "Build arguments about the risks and benefits of social networking."
+  ],
+  lecture: [
+    {
+      h: "1. Preparing Both Sides",
+      body: `<p>A skilled debater can argue either side of almost any resolution — this session asks you to prepare full 1AC-style AND full 1NC-style materials for the same resolution before knowing which side you will be assigned. This "switch-side" practice deepens understanding of an issue and prevents debaters from developing lazy, one-sided thinking.</p>`
+    },
+    {
+      h: "2. Assembling a Case File",
+      body: `<p>A complete case file for one side should include: an introduction, 3–4 points each with a signpost/reason/support, a bank of pre-written refutations against the most likely opposing arguments, and a rebuttal outline highlighting your team's 2–3 strongest reasons to win.</p>`
+    },
+    {
+      h: "3. Live Flowing Practice",
+      body: `<p>Today's practice debate, performed live by classmates, should be flowed in real time by every other student in the room — not just the two debating teams. This trains the whole class in the listening and organizational skills tested on Minitest 3.</p>`
+    },
+    {
+      h: "4. Topic Focus — Social Networking",
+      body: `<p>Do social networking platforms do more good than harm? Supporters point out that platforms like Facebook, Instagram, and others let people stay in touch with distant friends and family, build communities around shared interests, and give small businesses and independent creators free tools to reach an audience. Critics point to risks including identity theft, exposure of children to predators or harmful content, addictive design, and evidence that heavy use can worsen mental health and reduce productivity.</p>
+      <p><b>Useful vocabulary:</b> platform, algorithm, engagement, addictive, identity theft, productivity, community-building, screen time.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Exercise A — Two-Sided Case Outline",
+      body: `<p>For the resolution "Social media does more harm than good," draft a one-page outline with three Affirmative signposts and three Negative signposts (six total), each with a one-sentence reason.</p>`
+    },
+    {
+      title: "Exercise B — Class Flow & Peer Score",
+      body: `<p>Watch/listen to a full six-speech debate performed by two classmate teams on the resolution above. Flow the entire debate, and write a two-sentence explanation of which team you believe won and why, citing at least one dropped argument.</p>`
+    }
+  ],
+  quiz: [
+    {q:"Why do debaters practice preparing BOTH sides of a resolution?", options:["It is required by international law","It deepens understanding and avoids one-sided, lazy thinking","It makes debates shorter","It removes the need for evidence"], a:1, exp:"Switch-side practice builds a more complete understanding of the issue."},
+    {q:"What should a complete 'case file' for one side include?", options:["Only the introduction","Introduction, points with support, pre-written refutations, and a rebuttal outline","Just a list of vocabulary words","The opposing team's case file"], a:1, exp:"A full case file covers construction, refutation, and rebuttal materials."},
+    {q:"Who should be flowing the live practice debate in class?", options:["Only the two debating teams","Only the teacher","Every student in the room","No one — flowing is not needed for practice"], a:2, exp:"The whole class flows to build listening/organizational skill for everyone."},
+    {q:"According to the lecture, one benefit of social networking is that it...", options:["always improves mental health for every user","lets small businesses and creators reach an audience for free","eliminates the risk of identity theft","guarantees higher academic productivity"], a:1, exp:"Free reach for small businesses/creators is a key pro-argument."},
+    {q:"According to the lecture, one risk of social networking is...", options:["it never affects children","addictive design and potential harm to mental health","complete elimination of community-building","guaranteed data security"], a:1, exp:"Addictive design and mental-health effects are cited as key risks."}
+  ],
+  videos: [
+    {
+      channel: "PBS NewsHour Student Reporting Labs",
+      title: "Teens Reflect on How Social Media Nearly Ruined Their Friendship",
+      url: "https://www.pbs.org/video/social-media-kids-1703630922/",
+      summary: "In this student-produced 'Moments of Truth' segment, two American teenagers speak directly to each other on camera about how constant Instagram messaging and checking nearly damaged their friendship.",
+      analysis: "Because the reporters and subjects are teenagers themselves, this is a genuine peer-to-peer testimony rather than an adult explainer; students can mine it for real, personal Example evidence for the Affirmative (harm) side of the two-sided case outline."
+    },
+    {
+      channel: "Middle Ground (Jubilee)",
+      title: "Has Social Media Harmed These Teens?",
+      url: "https://www.youtube.com/watch?v=jRkuf3usljM",
+      summary: "American teenagers who are heavy social-media users and teenagers who avoid it sit down together to discuss and debate the platform's effect on friendship, self-image, and daily life.",
+      analysis: "This adds a genuine multi-speaker discussion/debate format between young people on exactly this topic, useful for the pro-social-networking side of the case. Instructor's note: Jubilee's channel also hosts openly political and occasionally heated 'Middle Ground' episodes on other topics; please preview this specific episode before class, since its tone can be more informal and unscripted than PBS or VOA content."
+    }
+  ]
+});
+
+// ---------------- SESSION 14 ----------------
+addSession({
+  week: 14,
+  title: "Full Six-Speech Debate Practice",
+  skillRef: "Discover Debate – Unit 8–9: Debate Formats, Responding to Attacks, Rebuttal Speeches, Flow a Complete Debate",
+  topicRef: "Exploring Debate 2 – Unit 16: Zoos",
+  objectives: [
+    "Perform a complete six-speech debate (1AC–1NC–2AC–2NC–NR–AR) as a team.",
+    "Apply every skill from Sessions 1–13 under realistic time pressure.",
+    "Give and receive structured peer feedback using a debate scoring rubric.",
+    "Build arguments about whether zoos are ethical and beneficial."
+  ],
+  lecture: [
+    {
+      h: "1. Putting It All Together",
+      body: `<p>Session 14 is almost entirely practical: teams of four (two Affirmative, two Negative) perform a timed, complete six-speech debate on an assigned resolution, while classmates flow and score the round using the rubric below.</p>`
+    },
+    {
+      h: "2. A Simple Scoring Rubric",
+      body: `<table class="mini-table">
+        <tr><th>Criterion</th><th>What to look for</th></tr>
+        <tr><td>Organization</td><td>Clear signposts; correct use of the 1AC/1NC macro structure.</td></tr>
+        <tr><td>Evidence quality</td><td>Uses more than bare assertion; supports withstand the six-question checklist.</td></tr>
+        <tr><td>Refutation</td><td>Directly engages opponents' points using the four-part sequence; no dropped arguments.</td></tr>
+        <tr><td>Delivery</td><td>Clear pace, audible volume, natural (not memorized-sounding) English.</td></tr>
+      </table>`
+    },
+    {
+      h: "3. Time Management",
+      body: `<p>Suggested speech lengths for classroom practice: Constructives (1AC, 1NC, 2AC, 2NC) — 3 minutes each; Rebuttals (NR, AR) — 2 minutes each. Strict timing forces debaters to prioritize their strongest points rather than trying to cover everything.</p>`
+    },
+    {
+      h: "4. Topic Focus — Zoos",
+      body: `<p>Do zoos do more good than harm for animals? Supporters argue modern zoos rescue injured or abandoned animals, run conservation and breeding programs for endangered species, and educate the public in ways that build support for wildlife protection. Critics argue that captivity denies animals their natural behaviors, causes measurable psychological distress in some species, and that education alone does not justify keeping wild animals confined for human viewing.</p>
+      <p><b>Useful vocabulary:</b> captivity, conservation, endangered species, breeding program, natural habitat, distress, ethical treatment.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Exercise A — Team Preparation",
+      body: `<p>In groups of four, assign roles (1st and 2nd Affirmative, 1st and 2nd Negative). Using the resolution "Zoos should be phased out and replaced entirely by wildlife sanctuaries," prepare your six-speech case using every organizational tool learned this semester.</p>`
+    },
+    {
+      title: "Exercise B — Full Round + Peer Scoring",
+      body: `<p>Perform the timed six-speech debate. All non-debating classmates flow the round and complete the scoring rubric, then share one strength and one improvement point with each team.</p>`
+    }
+  ],
+  quiz: [
+    {q:"In the suggested timing, how long is each Constructive speech?", options:["1 minute","3 minutes","5 minutes","10 minutes"], a:1, exp:"Constructives (1AC, 1NC, 2AC, 2NC) are suggested at 3 minutes each."},
+    {q:"What does the rubric's 'Refutation' criterion check for?", options:["Loud volume only","Direct engagement with opponents' points and no dropped arguments","Memorized speeches","Using only statistics"], a:1, exp:"Good refutation directly engages every opposing point, leaving nothing dropped."},
+    {q:"Why is strict time management useful in debate practice?", options:["It has no real purpose","It forces debaters to prioritize their strongest points","It allows unlimited new evidence in rebuttals","It replaces the need for organization"], a:1, exp:"Time pressure teaches prioritization of the strongest arguments."},
+    {q:"According to the lecture, one argument FOR zoos is that they...", options:["always harm every animal equally","run conservation and breeding programs for endangered species","eliminate the need for wildlife protection education","are identical to wildlife sanctuaries"], a:1, exp:"Conservation/breeding programs are the key pro-argument for zoos."},
+    {q:"According to the lecture, one argument AGAINST zoos is that...", options:["captivity may deny animals natural behaviors and cause distress","zoos never educate the public","all zoos have been replaced by sanctuaries already","captivity guarantees animal happiness"], a:0, exp:"Critics point to distress/denial of natural behavior as their core objection."}
+  ],
+  videos: [
+    {
+      channel: "PBS NewsHour",
+      title: "Baby Elephant at National Zoo Helps Lead Fight Against a Deadly Virus",
+      url: "https://www.pbs.org/video/saving-elephants-1786653736/",
+      summary: "A recent PBS NewsHour report follows veterinarians at the U.S. National Zoo developing a new treatment, using a baby elephant, against a virus that is the leading cause of death in young Asian elephants worldwide.",
+      analysis: "A clear, current example for the pro-zoo/conservation side: students can extract the zoo's research and species-protection role as Expert Opinion and Example support for an Affirmative case."
+    },
+    {
+      channel: "CNN",
+      title: "How Captivity Saved These Animals from Extinction",
+      url: "https://www.cnn.com/2020/09/17/world/captive-breeding-species-cte-scn-spc-intl/index.html",
+      summary: "A CNN feature describing successful zoo breeding programs that helped save species such as the California condor and the Arabian oryx from extinction, while also noting that critics see captive breeding as an incomplete or even cruel substitute for protecting wild habitats.",
+      analysis: "Because the piece states both the conservation success stories and the critics' objections in the same report, students can use it to build signposts for both the pro- and anti-zoo sides of the Session 14 full debate."
+    }
+  ]
+});
+
+// ---------------- SESSION 15 ----------------
+addSession({
+  week: 15,
+  title: "Review & Final Test Preparation",
+  skillRef: "Comprehensive review of Sessions 1–14",
+  topicRef: "No new topic — consolidation and exam readiness",
+  isReview: true,
+  objectives: [
+    "Review the full pipeline of debate skills: Opinion → Reason → Support → Organization → Refutation → Rebuttal → Flow.",
+    "Review the vocabulary and arguments collected from all 14 Exploring Debate 2 topics covered this semester.",
+    "Complete a comprehensive practice test covering theory and applied skills.",
+    "Receive process/participation scores and understand the final exam format."
+  ],
+  lecture: [
+    {
+      h: "1. The Whole Debate Pipeline, at a Glance",
+      body: `<table class="mini-table">
+        <tr><th>Session(s)</th><th>Skill</th></tr>
+        <tr><td>1</td><td>Types of opinion; debate terms</td></tr>
+        <tr><td>2</td><td>Explaining opinions; giving reasons</td></tr>
+        <tr><td>3–4</td><td>Types of support; researching evidence</td></tr>
+        <tr><td>5</td><td>Organizing the 1AC (macro & micro)</td></tr>
+        <tr><td>6–8</td><td>Refuting opinions; challenging supports; making refutations</td></tr>
+        <tr><td>9</td><td>Organizing the 1NC</td></tr>
+        <tr><td>10–11</td><td>Full debate formats; rebuttal speeches; flowing</td></tr>
+        <tr><td>12–14</td><td>Full case preparation; complete six-speech debate practice</td></tr>
+      </table>`
+    },
+    {
+      h: "2. Topic Vocabulary Recap",
+      body: `<p>Across the semester you built arguments and vocabulary on 14 real-world issues: School Uniforms, College, Internet Censorship, File Sharing, CCTV, Privacy of Public Figures, Advertisement, Arranged Marriage, Legacy Preference, Death Penalty, Abortion, Human Nature, Social Networking, and Zoos. Review your notes and vocabulary lists from each — the final exam may draw resolutions from any of these areas.</p>`
+    },
+    {
+      h: "3. Final Exam Format",
+      body: `<p>Expect a combination of: (1) a written or short-answer section testing your knowledge of debate terminology and structure (signposts, refutation types, speech order), and (2) an applied section where you either write or deliver part of a debate case on a resolution drawn from one of this semester's topics.</p>`
+    }
+  ],
+  practice: [
+    {
+      title: "Review Exercise A — Rebuild the Pipeline",
+      body: `<p>Without looking at your notes, write out from memory: the three opinion types, the four types of support, the six refutation categories, the five parts of a 1NC, and the six speeches of a full debate in order.</p>`
+    },
+    {
+      title: "Review Exercise B — Rapid-Fire Case Building",
+      body: `<p>In pairs, pick any one topic from the semester at random. In five minutes, produce a full mini-1AC (introduction + 3 signposts + 1 full point) and a mini-1NC refutation of it.</p>`
+    }
+  ],
+  quiz: [
+    {q:"What are the three types of opinion covered in Session 1?", options:["Value, Policy, Fact","Claim, Warrant, Impact","Signpost, Reason, Support","Aff, Neg, Judge"], a:0, exp:"Value, Policy, and Fact are the three fundamental opinion types."},
+    {q:"What are the four types of support covered in Session 3?", options:["Signpost, Rephrase, Negation, Rationale","Explanation, Example, Statistic, Expert Opinion","Introduction, Points, Conclusion, Transition","Constructive, Rebuttal, Flow, Resolution"], a:1, exp:"Explanation, Example, Statistic, and Expert Opinion are the four support types."},
+    {q:"How many macro parts does a 1NC have, and what is the extra part compared to a 1AC?", options:["Three; no extra part","Four; an extra Conclusion","Five; an extra Transition (plus Refutations)","Six; an extra Rebuttal"], a:2, exp:"The 1NC has five parts, adding Refutations and a Transition before the Negative's own points."},
+    {q:"What is the correct order of all six speeches in a full debate?", options:["1NC, 1AC, 2NC, 2AC, AR, NR","1AC, 1NC, 2AC, 2NC, NR, AR","1AC, 2AC, 1NC, 2NC, NR, AR","AR, NR, 2NC, 2AC, 1NC, 1AC"], a:1, exp:"The correct chain is 1AC → 1NC → 2AC → 2NC → NR → AR."},
+    {q:"Which speech type may NOT introduce brand-new evidence or points?", options:["Constructive speeches","Rebuttal speeches","Both types equally","Neither — new evidence is always allowed"], a:1, exp:"Rebuttals may only defend/attack existing points, not add new ones."},
+    {q:"What is the purpose of 'flowing' a debate, reviewed across Sessions 11–14?", options:["Deciding the topic in advance","Tracking every argument and response across all six speeches","Scoring pronunciation only","Replacing the need for a judge"], a:1, exp:"Flowing is the structured note-taking system for tracking the whole debate."}
+  ],
+  videos: []
+});
+
+</script>
+<script>
+// ============================================================
+// App logic — navigation, tab switching, quiz interactivity
+// ============================================================
+let currentWeek = 1;
+let currentTab = 'lecture';
+let quizState = {}; // { weekNumber: { answered: {qIndex: optIndex}, submitted: bool } }
+
+function el(tag, opts={}, children=[]){
+  const e = document.createElement(tag);
+  Object.entries(opts).forEach(([k,v])=>{
+    if(k==='class') e.className=v;
+    else if(k==='html') e.innerHTML=v;
+    else if(k==='text') e.textContent=v;
+    else e.setAttribute(k,v);
+  });
+  children.forEach(c=>{ if(c) e.appendChild(c); });
+  return e;
+}
+
+document.getElementById('courseTitle').textContent = COURSE.title;
+document.getElementById('courseSub').textContent = COURSE.subtitle;
+
+let drawerScrollY = 0;
+function setSessionDrawer(open){
+  const nav = document.getElementById('sessionNav');
+  const backdrop = document.getElementById('sessionBackdrop');
+  const toggle = document.getElementById('sessionToggle');
+  const isOpen = !!open;
+  if(isOpen){
+    drawerScrollY = window.scrollY || window.pageYOffset || 0;
+    document.body.style.top = `-${drawerScrollY}px`;
+  }
+  nav.classList.toggle('open', isOpen);
+  backdrop.classList.toggle('open', isOpen);
+  document.body.classList.toggle('drawer-open', isOpen);
+  toggle.setAttribute('aria-expanded', String(isOpen));
+  if(!isOpen){
+    document.body.style.top = '';
+    window.scrollTo(0, drawerScrollY);
+  }
+}
+
+// Prevent iOS touch scrolling on the dimmed background while the drawer is open.
+document.getElementById('sessionBackdrop').addEventListener('touchmove', e=>e.preventDefault(), {passive:false});
+
+document.getElementById('sessionToggle').addEventListener('click', ()=>{
+  const nav = document.getElementById('sessionNav');
+  setSessionDrawer(!nav.classList.contains('open'));
+});
+document.getElementById('sessionBackdrop').addEventListener('click', ()=>setSessionDrawer(false));
+
+function renderNav(){
+  const nav = document.getElementById('sessionNav');
+  nav.innerHTML = '';
+  nav.appendChild(el('div', {class:'nav-title', text:'15 Sessions'}));
+  COURSE.sessions.forEach(s=>{
+    const btn = el('button', {class:'nav-item' + (s.week===currentWeek ? ' active':'')});
+    const n = el('span',{class:'n', text:'S'+s.week});
+    btn.appendChild(n);
+    btn.appendChild(document.createTextNode(s.title));
+    const tag = el('span',{class:'tag', text: s.selfStudy ? 'Self-study (Moodle)' : (s.isReview ? 'Review' : (s.hasMinitest ? 'Includes Minitest' : ''))});
+    if(tag.textContent) btn.appendChild(tag);
+    btn.addEventListener('click', ()=>{ currentWeek = s.week; currentTab='lecture'; setSessionDrawer(false); renderAll(); window.scrollTo({top:0,behavior:'smooth'}); });
+    nav.appendChild(btn);
+  });
+}
+
+function getSession(week){
+  return COURSE.sessions.find(s=>s.week===week);
+}
+
+function renderMain(){
+  const main = document.getElementById('sessionMain');
+  main.innerHTML = '';
+  const s = getSession(currentWeek);
+
+  main.appendChild(el('div',{class:'session-kicker', text:'Session ' + s.week + ' of 15'}));
+  main.appendChild(el('h2',{class:'session-title', text:s.title}));
+
+  if(s.selfStudy) main.appendChild(el('span',{class:'badge-selfstudy', text:'SELF-STUDY ON MOODLE'}));
+  if(s.hasMinitest) main.appendChild(el('span',{class:'badge-minitest', text:'INCLUDES MINITEST'}));
+  if(s.isReview) main.appendChild(el('span',{class:'badge-review', text:'REVIEW SESSION'}));
+
+  const refs = el('div',{class:'refs'});
+  refs.appendChild(el('span',{class:'ref-chip', html:'<b>Skill:</b> '+s.skillRef}));
+  refs.appendChild(el('span',{class:'ref-chip', html:'<b>Topic:</b> '+s.topicRef}));
+  main.appendChild(refs);
+
+  const obj = el('div',{class:'objectives'});
+  obj.appendChild(el('h3',{text:'Learning Objectives'}));
+  const ul = el('ul');
+  s.objectives.forEach(o=> ul.appendChild(el('li',{text:o})));
+  obj.appendChild(ul);
+  main.appendChild(obj);
+
+  // Tabs
+  const tabs = [
+    {id:'lecture', label:'Lecture'},
+    {id:'practice', label:'Practice'},
+    {id:'quiz', label:'Quiz ('+s.quiz.length+' Qs)'},
+    {id:'videos', label:'Video Resources'}
+  ];
+  const tabbar = el('div',{class:'tabbar'});
+  tabs.forEach(t=>{
+    const b = el('button',{class:'tabbtn'+(currentTab===t.id?' active':''), text:t.label});
+    b.addEventListener('click', ()=>{ currentTab=t.id; renderMain(); });
+    tabbar.appendChild(b);
+  });
+  main.appendChild(tabbar);
+
+  // Panels
+  main.appendChild(renderLecturePanel(s));
+  main.appendChild(renderPracticePanel(s));
+  main.appendChild(renderQuizPanel(s));
+  main.appendChild(renderVideosPanel(s));
+
+  // footer nav
+  const footer = el('div',{class:'session-footer-nav'});
+  const prev = el('button',{class:'ghost', text:'← Previous session'});
+  prev.disabled = s.week<=1;
+  prev.addEventListener('click', ()=>{ if(s.week>1){ currentWeek=s.week-1; currentTab='lecture'; renderAll(); window.scrollTo({top:0,behavior:'smooth'});} });
+  const next = el('button',{class:'primary', text:'Next session →'});
+  next.disabled = s.week>=15;
+  next.addEventListener('click', ()=>{ if(s.week<15){ currentWeek=s.week+1; currentTab='lecture'; renderAll(); window.scrollTo({top:0,behavior:'smooth'});} });
+  footer.appendChild(prev); footer.appendChild(next);
+  main.appendChild(footer);
+}
+
+function renderLecturePanel(s){
+  const panel = el('div',{class:'tabpanel'+(currentTab==='lecture'?' active':''), id:'panel-lecture'});
+  s.lecture.forEach(block=>{
+    const b = el('div',{class:'lec-block'});
+    b.appendChild(el('h4',{text:block.h}));
+    b.appendChild(el('div',{html:block.body}));
+    panel.appendChild(b);
+  });
+  return panel;
+}
+
+function renderPracticePanel(s){
+  const panel = el('div',{class:'tabpanel'+(currentTab==='practice'?' active':''), id:'panel-practice'});
+  s.practice.forEach(p=>{
+    const card = el('div',{class:'practice-card'});
+    card.appendChild(el('h4',{text:p.title}));
+    card.appendChild(el('div',{html:p.body}));
+    panel.appendChild(card);
+  });
+  return panel;
+}
+
+function renderQuizPanel(s){
+  const panel = el('div',{class:'tabpanel'+(currentTab==='quiz'?' active':''), id:'panel-quiz'});
+  if(!quizState[s.week]) quizState[s.week] = {answered:{}, submitted:false};
+  const state = quizState[s.week];
+
+  const answeredCount = Object.keys(state.answered).length;
+  panel.appendChild(el('div',{class:'quiz-progress', text: `Answered ${answeredCount} of ${s.quiz.length} questions.`}));
+
+  s.quiz.forEach((q, qi)=>{
+    const card = el('div',{class:'qcard'});
+    card.appendChild(el('div',{class:'qtext', text: (qi+1)+'. '+q.q}));
+    q.options.forEach((opt, oi)=>{
+      const btn = el('button',{class:'opt'});
+      btn.textContent = opt;
+      if(state.answered[qi]===oi) btn.classList.add('selected');
+      if(state.submitted){
+        btn.disabled = true;
+        if(oi===q.a) btn.classList.add('correct');
+        else if(state.answered[qi]===oi && oi!==q.a) btn.classList.add('incorrect');
+      }
+      btn.addEventListener('click', ()=>{
+        if(state.submitted) return;
+        state.answered[qi]=oi;
+        renderMain();
+      });
+      card.appendChild(btn);
+    });
+    if(state.submitted){
+      const exp = el('div',{class:'explain show', html: '<b>'+(state.answered[qi]===q.a ? 'Correct. ':'Not quite. ')+'</b>'+q.exp});
+      card.appendChild(exp);
+    }
+    panel.appendChild(card);
+  });
+
+  const actions = el('div',{class:'quiz-actions'});
+  if(!state.submitted){
+    const submitBtn = el('button',{class:'primary', text:'Check my answers'});
+    submitBtn.addEventListener('click', ()=>{ state.submitted = true; renderMain(); });
+    actions.appendChild(submitBtn);
+  } else {
+    let correct = 0;
+    s.quiz.forEach((q,qi)=>{ if(state.answered[qi]===q.a) correct++; });
+    actions.appendChild(el('div',{class:'score-box', text:`Score: ${correct} / ${s.quiz.length}`}));
+    const retryBtn = el('button',{class:'ghost', text:'Retry quiz'});
+    retryBtn.addEventListener('click', ()=>{ quizState[s.week] = {answered:{}, submitted:false}; renderMain(); });
+    actions.appendChild(retryBtn);
+  }
+  panel.appendChild(actions);
+  return panel;
+}
+
+function renderVideosPanel(s){
+  const panel = el('div',{class:'tabpanel'+(currentTab==='videos'?' active':''), id:'panel-videos'});
+  if(!s.videos || s.videos.length===0){
+    panel.appendChild(el('p',{text:'This review session does not require new video resources — please revisit the videos linked in Sessions 1–14.'}));
+    return panel;
+  }
+  s.videos.forEach(v=>{
+    const isGap = !v.url;
+    const card = el('div',{class:'video-card'+(isGap?' gap':'')});
+    card.appendChild(el('div',{class:'vchannel', text:v.channel}));
+    card.appendChild(el('h4',{text:v.title}));
+    if(v.url){
+      card.appendChild(el('a',{class:'vlink', href:v.url, target:'_blank', rel:'noopener', text:v.url}));
+    }
+    card.appendChild(el('span',{class:'vlabel', text:'Summary'}));
+    card.appendChild(el('p',{text:v.summary}));
+    card.appendChild(el('span',{class:'vlabel', text:'Why it fits this session'}));
+    card.appendChild(el('p',{text:v.analysis}));
+    panel.appendChild(card);
+  });
+  return panel;
+}
+
+function renderAll(){
+  renderNav();
+  renderMain();
+}
+
+renderAll();
+
+</script>
+</body>
+</html>
+
+<script>
+window.addEventListener('resize', ()=>{ if(window.innerWidth>820) setSessionDrawer(false); });
+</script>
